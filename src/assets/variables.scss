@@ -121,16 +121,6 @@ $scroll-shadow: rgba(0, 0, 0, 0.3);
 $scroll-bg: #f5f5f5;
 $scroll-thumb: rgb(197, 197, 197);
 
-// Badges
-$badge-padding-y: 4px;
-$badge-padding-x: 11px;
-$badge-border-radius: 4px;
-$badge-font-size: 11px;
-$badge-font-weight: 600;
-$table-group-separator-color: 0;
-$secondary: #8e9599;
-$blue: $primary-color;
-
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins";
