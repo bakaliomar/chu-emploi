@@ -2,6 +2,9 @@ import { useAxios, UseAxiosOptions } from "@vueuse/integrations/useAxios";
 import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import axios from "axios";
 import { notify } from "@kyvg/vue3-notification";
+import { useAuth } from "@/store/auth";
+
+const auth = useAuth();
 
 export class AxiosSingleton {
   private static instance: AxiosInstance;
@@ -33,7 +36,7 @@ export class AxiosSingleton {
         (response) => {
           return response;
         },
-        (err) => {
+        async (err) => {
           const errors = err.response?.data;
           if (errors?.errors)
             Object.values(errors.errors).forEach((key): void => {
@@ -49,7 +52,18 @@ export class AxiosSingleton {
             });
           }
 
-          if (err.response.status === 401 && err.config.url !== "/api/login") {
+          if (err.response?.status === 401) {
+            const { status, data } = await axios.get("/auth/refresh", {
+              headers: {
+                Authorization: auth.refresh_token,
+              },
+            });
+            if (status === 200) {
+              auth.setAccessToken(data.access_token);
+              auth.setRefreshToken(data.refresh_token);
+              const instance = this.getInstance();
+              return instance(err.config);
+            }
             localStorage.clear();
             window.location.reload();
           }
