@@ -5,7 +5,8 @@
     .card-body-contnent.flex-grow-1
       .specialities.d-flex.flex-row-reverse.align-items-center.flex-wrap
         .specialities-title : التخصصات
-        .speciality.py-2.px-1.ms-2(v-for="speciality in concour.concourSpeciality" :key="speciality.speciality.id") {{speciality.speciality.name}}
+        .speciality.py-2.px-1.ms-2(v-for="speciality in getSpecialities" :key="speciality.speciality.id") {{speciality.speciality.name}}
+        .speciality.py-2.px-1.ms-2.cursor-pointer(@click="$emit('showSpecialities', concour.concourSpeciality)" v-if="concour.concourSpeciality.length > 2") ...
       .positions-number  عدد المناصب : {{ concour.positionsNumber }}
       .closing-date اخر أجل لإيداع الترشيحات : {{ depositDate }}
       .concour-date تاريخ إجراء المباراة : {{ concourDate }}
@@ -16,11 +17,20 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import type { PropType } from "vue";
+
+defineEmits(["showSpecialities"]);
+
 const props = defineProps({
   concour: {
     type: Object as PropType<Concour>,
     required: true,
   },
+});
+
+const getSpecialities = computed(() => {
+  return props.concour.concourSpeciality.length > 2
+    ? props.concour.concourSpeciality.subarray(0, 3)
+    : props.concour.concourSpeciality;
 });
 
 function getArabicDay(day: number) {
@@ -34,7 +44,7 @@ function getArabicDay(day: number) {
     "السبت",
   ][day];
 }
-//
+
 function getArabicMonth(month: number) {
   return [
     "يناير",
@@ -89,15 +99,6 @@ const concourDate = computed(() => {
     font-size: 1.7rem;
   }
   .card-body {
-    .specialities {
-      .speciality {
-        border: 1px solid #22aee5;
-        border-radius: 5px;
-        line-height: 0.5rem;
-        color: #22aee5;
-        font-weight: 400;
-      }
-    }
     .file-btn {
       background-color: #10529e;
       color: white;
