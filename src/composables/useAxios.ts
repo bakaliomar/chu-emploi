@@ -3,8 +3,7 @@ import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import axios from "axios";
 import { notify } from "@kyvg/vue3-notification";
 import { useAuth } from "@/store/auth";
-
-const auth = useAuth();
+import { getActivePinia } from "pinia";
 
 export class AxiosSingleton {
   private static instance: AxiosInstance;
@@ -53,6 +52,8 @@ export class AxiosSingleton {
           }
 
           if (err.response?.status === 401) {
+            await getActivePinia();
+            const auth = useAuth();
             const { status, data } = await axios.get("/auth/refresh", {
               headers: {
                 Authorization: auth.refresh_token,
