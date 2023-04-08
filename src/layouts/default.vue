@@ -16,9 +16,11 @@
     width: 100%;
     background-color: rgba(255, 255, 255, 0.5);
     overflow-y: auto;
+    min-height: 100vh;
   }
   #page-content {
     min-height: calc(100vh - 32px);
+    height: 100%;
   }
   #page-footer {
     font-weight: 700;
