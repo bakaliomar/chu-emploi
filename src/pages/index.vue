@@ -1,6 +1,7 @@
 <template lang="pug">
 .container.postouler-page
   SpecialitiesModal(:specialities="selectedSpecialities" v-if="specialityshow" @close="specialityshow = false")
+  PDFViewerModal(:source="source" v-if="showPdf" @close="showPdf = false")
   .rejoindre-card-container.d-flex.align-items-center(v-if="!openConcours")
     .rejoindre-card.d-flex.flex-column
       .d-flex.justify-content-center
@@ -20,7 +21,7 @@
         img.h-100.w-100(:src="logo")
     .cards-container.row.mt-4.flex-row-reverse
       .col-12.col-md-12.col-lg-6.p-2(v-for="concour in concours" :key="concour.id")
-        ConcourCard(:concour="concour" @showSpecialities="showSpecialities")
+        ConcourCard(:concour="concour" @showSpecialities="showSpecialities" @showFile="showFile")
 </template>
 <script lang="ts" setup>
 import { ref, onBeforeMount, computed } from "vue";
@@ -28,6 +29,7 @@ import logo from "@/assets/img/chu-new.png";
 import useAxios from "@/composables/useAxios";
 import ConcourCard from "@/components/ConcourCard.vue";
 import SpecialitiesModal from "@/components/SpecialitiesModal.vue";
+import PDFViewerModal from "@/components/PDFViewerModal.vue";
 
 const { axios } = useAxios();
 const openConcours = ref(false);
@@ -35,6 +37,8 @@ const selectedSpecialities = ref<
   { speciality: { id: string; name: string } }[]
 >([]);
 const specialityshow = ref(false);
+const showPdf = ref(false);
+const source = ref("");
 
 const concours = ref<Concour[]>([]);
 const pagination = ref<Paginate>({
@@ -51,6 +55,11 @@ function showSpecialities(
 ) {
   specialityshow.value = true;
   selectedSpecialities.value = specs;
+}
+
+function showFile(src: string) {
+  source.value = src;
+  showPdf.value = true;
 }
 
 onBeforeMount(() => {

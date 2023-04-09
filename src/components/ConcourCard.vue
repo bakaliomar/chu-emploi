@@ -12,13 +12,16 @@
       .concour-date تاريخ إجراء المباراة : {{ concourDate }}
     .d-flex.justify-content-between.flex-row-reverse
       button.file-btn.btn.rounded-pill.px-5.py-2 إيداع الملف
-      button.submit-btn.btn.rounded-pill.px-5.py-2 قرار فتح المباراة
+      button.submit-btn.btn.rounded-pill.px-5.py-2(@click="$emit('showFile', source)") قرار فتح المباراة
 </template>
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import type { PropType } from "vue";
+import useAxios from "@/composables/useAxios";
 
-defineEmits(["showSpecialities"]);
+defineEmits(["showSpecialities", "showFile"]);
+
+const { axios } = useAxios();
 
 const props = defineProps({
   concour: {
@@ -26,6 +29,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const source = ref("");
 
 const getSpecialities = computed(() => {
   return props.concour.concourSpeciality.length > 2
@@ -84,6 +89,18 @@ const concourDate = computed(() => {
     date.getHours(),
     date.getMinutes()
   )}`;
+});
+
+onMounted(() => {
+  axios
+    .get(`/concours/${props.concour.id}/anounce`, {
+      headers: {
+        responseType: "blob",
+      },
+    })
+    .then(({ data }) => {
+      source.value = window.URL.createObjectURL(new Blob([data as string]));
+    });
 });
 </script>
 <style lang="scss">
