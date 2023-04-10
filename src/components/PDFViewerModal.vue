@@ -1,6 +1,7 @@
 <template lang="pug">
-Modal.show-close-icon.big.pdf-modal 
-  PDFViewer(:source="source" :controls="['download','print','rotate','zoom','catalog','switchPage']" style="height: 80vh; width: 80vw" @download="handleDownload")
+Modal.show-close-icon.big.pdf-modal
+  .row
+    PDFViewer.col-12(:source="source" :controls="['download','print','rotate','zoom','catalog','switchPage']" style="height: 80vh;" @download="handleDownload")
 </template>
 <script lang="ts" setup>
 import Modal from "@/components/Modal.vue";
