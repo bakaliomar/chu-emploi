@@ -10,7 +10,7 @@
       .positions-number  عدد المناصب : {{ concour.positionsNumber }}
       .closing-date اخر أجل لإيداع الترشيحات : {{ depositDate }}
       .concour-date تاريخ إجراء المباراة : {{ concourDate }}
-    .d-flex.justify-content-between.flex-row-reverse
+    .d-flex.git .flex-row-reverse
       button.file-btn.btn.rounded-pill.px-5.py-2 إيداع الملف
       button.submit-btn.btn.rounded-pill.px-5.py-2(@click="$emit('showFile', source)") قرار فتح المباراة
 </template>
