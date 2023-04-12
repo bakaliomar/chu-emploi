@@ -11,8 +11,8 @@
       .closing-date اخر أجل لإيداع الترشيحات : {{ depositDate }}
       .concour-date تاريخ إجراء المباراة : {{ concourDate }}
     .d-flex.justify-content-between.flex-row-reverse
-      button.file-btn.btn.rounded-pill.px-5.py-2 إيداع الملف
-      button.submit-btn.btn.rounded-pill.px-5.py-2(@click="$emit('showFile', source)") قرار فتح المباراة
+      button.file-btn.rounded-pill.px-5.py-2 إيداع الملف
+      button.submit-btn.rounded-pill.px-5.py-2(@click="$emit('showFile', source)") قرار فتح المباراة
 </template>
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
