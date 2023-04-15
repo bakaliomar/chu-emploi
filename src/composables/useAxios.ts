@@ -2,7 +2,7 @@ import { useAxios, UseAxiosOptions } from "@vueuse/integrations/useAxios";
 import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import axios from "axios";
 import { notify } from "@kyvg/vue3-notification";
-import { useAuth } from "@/store/auth";
+import { useAuthStore } from "@/store/useAuth.store";
 import { getActivePinia } from "pinia";
 
 export class AxiosSingleton {
@@ -24,7 +24,7 @@ export class AxiosSingleton {
       AxiosSingleton.instance.interceptors.request.use((config) => {
         if (config.headers) {
           config.headers.Authorization = localStorage.access_token
-            ? `${localStorage.access_token}`
+            ? `Bearer ${localStorage.access_token}`
             : false;
         }
 
@@ -52,11 +52,11 @@ export class AxiosSingleton {
           }
 
           if (err.response?.status === 401) {
-            await getActivePinia();
-            const auth = useAuth();
+            getActivePinia();
+            const auth = useAuthStore();
             const { status, data } = await axios.get("/auth/refresh", {
               headers: {
-                Authorization: auth.refresh_token,
+                Authorization: `Bearer ${auth.refreshToken}`,
               },
             });
             if (status === 200) {

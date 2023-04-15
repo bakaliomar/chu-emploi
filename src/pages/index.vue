@@ -30,6 +30,9 @@ import useAxios from "@/composables/useAxios";
 import ConcourCard from "@/components/ConcourCard.vue";
 import SpecialitiesModal from "@/components/SpecialitiesModal.vue";
 import PDFViewerModal from "@/components/PDFViewerModal.vue";
+import { useNotification } from "@kyvg/vue3-notification";
+
+const { notify } = useNotification();
 
 const { axios } = useAxios();
 const openConcours = ref(false);
@@ -63,15 +66,10 @@ function showFile(src: string) {
 }
 
 onBeforeMount(() => {
-  axios
-    .get("/concours/published")
-    .then(({ data }) => {
-      concours.value = data.data;
-      pagination.value = data.meta;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  axios.get("/concours/published").then(({ data }) => {
+    concours.value = data.data;
+    pagination.value = data.meta;
+  });
 });
 </script>
 <style lang="scss">
