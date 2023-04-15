@@ -16,18 +16,24 @@ export const useAuthStore = defineStore("auth", () => {
 
   const { axios } = useAxios();
 
-  const token = ref<string>("");
+  const accessToken = useStorage<string>("access_token", "");
 
-  const isAuth = computed(() => !!token.value);
+  const refreshToken = useStorage<string>("refresh_token", "");
+
+  const isAuth = computed(() => !!accessToken.value);
 
   const currentUser = computed(() => new User(user.value.auth.user));
 
-  const setToken = (payload: string) => {
-    token.value = payload;
+  const setAccessToken = (payload: string) => {
+    accessToken.value = payload;
+  };
+
+  const setRefreshToken = (payload: string) => {
+    refreshToken.value = payload;
   };
 
   const fetchUser = async () => {
-    return axios("/api/me", { method: "GET" }).then(({ data }) => {
+    return axios("/users/me", { method: "GET" }).then(({ data }) => {
       user.value = {
         auth: {
           user: data.user,
@@ -39,15 +45,18 @@ export const useAuthStore = defineStore("auth", () => {
 
   const logout = async () => {
     return axios.delete("/api/logout").then(() => {
-      token.value = "";
+      accessToken.value = "";
+      refreshToken.value = "";
       user.value = null;
     });
   };
 
   return {
-    token,
+    accessToken,
+    refreshToken,
     isAuth,
-    setToken,
+    setAccessToken,
+    setRefreshToken,
     fetchUser,
     logout,
     currentUser,

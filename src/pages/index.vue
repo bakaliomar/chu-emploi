@@ -34,12 +34,6 @@ import { useNotification } from "@kyvg/vue3-notification";
 
 const { notify } = useNotification();
 
-notify({
-  title: "Authorization",
-  text: "You have been logged in!",
-  type: "error",
-});
-
 const { axios } = useAxios();
 const openConcours = ref(false);
 const selectedSpecialities = ref<
@@ -72,15 +66,10 @@ function showFile(src: string) {
 }
 
 onBeforeMount(() => {
-  axios
-    .get("/concours/published")
-    .then(({ data }) => {
-      concours.value = data.data;
-      pagination.value = data.meta;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  axios.get("/concours/published").then(({ data }) => {
+    concours.value = data.data;
+    pagination.value = data.meta;
+  });
 });
 </script>
 <style lang="scss">
