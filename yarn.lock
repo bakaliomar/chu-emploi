@@ -478,7 +478,7 @@
 
 "@kyvg/vue3-notification@^2.9.0":
   version "2.9.0"
-  resolved "https://registry.npmjs.org/@kyvg/vue3-notification/-/vue3-notification-2.9.0.tgz"
+  resolved "https://registry.yarnpkg.com/@kyvg/vue3-notification/-/vue3-notification-2.9.0.tgz#8bcf23a9c54dfe609b1bbe2cb244bbfb9011f41e"
   integrity sha512-5Vxl8h/+PFtBmzGgMxTjkH4gwEpvmTEka+dLqpek+8GJFm6LDfSji+rFx9vumgBF7db0KenGWeSrA+Qnclz9vg==
 
 "@nodelib/fs.scandir@2.1.5":

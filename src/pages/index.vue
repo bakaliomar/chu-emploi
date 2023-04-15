@@ -30,6 +30,15 @@ import useAxios from "@/composables/useAxios";
 import ConcourCard from "@/components/ConcourCard.vue";
 import SpecialitiesModal from "@/components/SpecialitiesModal.vue";
 import PDFViewerModal from "@/components/PDFViewerModal.vue";
+import { useNotification } from "@kyvg/vue3-notification";
+
+const { notify } = useNotification();
+
+notify({
+  title: "Authorization",
+  text: "You have been logged in!",
+  type: "error",
+});
 
 const { axios } = useAxios();
 const openConcours = ref(false);
