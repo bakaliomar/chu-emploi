@@ -18,6 +18,27 @@ export interface Concour {
   concourSpeciality: { speciality: { name: string; id: string } }[];
 }
 
+export interface CurrentUser {
+  first_name: string;
+  last_name: string;
+  email: string;
+  id: string;
+  roles: string;
+  cin: string;
+}
+
+declare interface Context {
+  from: import("vue-router").RouteLocationNormalized;
+  to: import("vue-router").RouteLocationNormalized;
+  next: import("vue-router").NavigationGuardNext;
+  auth: {
+    isAuth: boolean;
+    token: string;
+    currentUser: Partial<import("@/utils/User").default>;
+  };
+  notify: (args: NotifyArgs) => void;
+}
+
 export interface Paginate {
   currentPage: number;
   lastPage: number;
