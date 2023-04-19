@@ -1,6 +1,6 @@
 <template lang="pug">
 .container.condidature-container
-  .candidature-card.px-3.py-4.border.my-5
+  .candidature-card.px-3.py-4.border.my-5(v-if="!isDone")
     form(@submit.prevent="onSubmit" v-if="!confirmationStep")
       div
         h1.primary-title Formulaire de candidature
@@ -46,7 +46,7 @@
           small.error {{ errors.firstNameArabic }}
         .form-group.col-12.col-md-6.col-lg-3
           label.required Date de naissance 
-          Datepicker(v-model="birthDate")
+          Datepicker.shadow.bg-body(v-model="birthDate")
           small.error {{ errors.birthDate }}
         .col-12.col-md-6.col-lg-3
       .row.mt-2
@@ -199,7 +199,7 @@
             .pair-value {{ lastNameArabic }}
         .pair-title-value
           .pair-title Date de naissance:
-          .pair-value {{ dateFormat(birthDate as string) }}
+          .pair-value {{ dateFormat(birthDate) }}
         .d-flex.justify-content-between.align-items-center
           .pair-title-value
             .pair-title Lieu de naissance:
@@ -254,7 +254,13 @@
         .d-flex.justify-content-center.mt-5
           button.btn.btn-precedent.rounded-pill.px-5.py-2(@click="confirmationStep = false") Précédent
           button.btn.btn-suivant.rounded-pill.px-5.py-2.ms-3(@click="sendData") Envoyer
-        
+  .success-card-conatiner.d-flex.justify-content-center.align-items-center(v-else)
+    .success-card.d-flex.aliign-items-center
+      .success-card-message
+        .text-end !تم إرسال طلبك بنجاح
+        .text-start.mt-2 Votre candidature a bien été envoyée!
+      .icon-wrraper.ms-3
+        img.h-100.w-100(:src="checked")
 
 </template>
 <script lang="ts" setup>
@@ -268,6 +274,7 @@ import { useNotification } from "@kyvg/vue3-notification";
 import Datepicker from "@vuepic/vue-datepicker";
 import format from "date-fns/formatISO9075";
 import "@vuepic/vue-datepicker/dist/main.css";
+import checked from "@/assets/img/checked.png";
 
 const { handleSubmit, errors } = useForm({
   validationSchema: yup.object({
@@ -294,7 +301,7 @@ const { handleSubmit, errors } = useForm({
     degreeSpeciality: yup.string().required(),
     establishmentName: yup.string().required(),
     graduationCountry: yup.string().required(),
-    graduationYear: yup.string().required(),
+    graduationYear: yup.number().required(),
     establishment: yup.string().required(),
   }),
 });
@@ -306,6 +313,7 @@ const fileError = ref("");
 const conditionError = ref("");
 const accept = ref(false);
 const confirmationStep = ref(false);
+const isDone = ref(false);
 const uploader = ref<HTMLInputElement | null>();
 const file = ref<File | null>(null);
 const { notify } = useNotification();
@@ -408,6 +416,7 @@ function sendData() {
         type: "success",
         title: "candiadautre added successfully",
       });
+      isDone.value = true;
     });
 }
 
@@ -541,6 +550,29 @@ onsubmit = handleSubmit(() => {
     .btn-suivant {
       background: #10529e;
       opacity: 0.96;
+    }
+  }
+  .success-card-conatiner {
+    min-height: calc(100vh - 32px);
+    .success-card {
+      border-radius: 35px;
+      background-color: white;
+      padding-bottom: 60px;
+      padding-top: 60px;
+      padding-left: 90px;
+      padding-right: 90px;
+
+      .icon-wrraper {
+        width: 87px;
+        height: 87px;
+      }
+
+      .success-card-message {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 39px;
+        line-height: 45px;
+      }
     }
   }
 }
