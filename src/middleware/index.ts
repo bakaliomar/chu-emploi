@@ -13,10 +13,10 @@ export default async (
   const ctx = context(to, from, next);
   const authType = ctx.to.meta.auth;
   if (getActivePinia()) {
-    const { isAuth, token, currentUser } = useAuthStore();
+    const { isAuth, accessToken, currentUser } = useAuthStore();
     ctx.auth = {
       isAuth,
-      token,
+      accessToken,
       currentUser,
     };
   }

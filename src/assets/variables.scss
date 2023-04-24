@@ -20,9 +20,17 @@ $primary-color: #10529e;
 $secondary-color: #22aee5;
 $muted-color: #909090;
 $white: #fff;
+$blue-light-3: #f5faff;
+
+$text-primary: #22aee5 !default;
 
 $box-shadow--modal: 0 0 1px 0 rgba(10, 31, 68, 0.1),
   0 26px 26px 0 rgba(10, 31, 68, 0.12);
+
+:root {
+  --primary: #{$primary-color};
+  --text-primary: #{$primary-color};
+}
 
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
