@@ -13,10 +13,10 @@ export default async (
   const ctx = context(to, from, next);
   const authType = ctx.to.meta.auth;
   if (getActivePinia()) {
-    const { isAuth, token, currentUser } = useAuthStore();
+    const { isAuth, accessToken, currentUser } = useAuthStore();
     ctx.auth = {
       isAuth,
-      token,
+      accessToken,
       currentUser,
     };
   }
@@ -36,7 +36,7 @@ export default async (
         /* @vite-ignore */ `../middleware/${middle}.ts`
       );
       pass = await exec.default(ctx);
-      if (!pass) break;
+      if (pass) break;
     }
   pass && ctx.next();
 };

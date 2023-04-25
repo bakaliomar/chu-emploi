@@ -11,7 +11,8 @@
       .closing-date اخر أجل لإيداع الترشيحات : {{ depositDate }}
       .concour-date تاريخ إجراء المباراة : {{ concourDate }}
     .d-flex.justify-content-between.flex-row-reverse
-      button.file-btn.rounded-pill.px-5.py-2 إيداع الملف
+      button.file-btn.rounded-pill.px-5.py-2 
+        router-link(to="/candidature") إيداع الملف
       button.submit-btn.rounded-pill.px-5.py-2(@click="$emit('showFile', source)") قرار فتح المباراة
 </template>
 <script lang="ts" setup>
@@ -125,6 +126,10 @@ onMounted(() => {
       &:hover {
         background-color: #22aee5;
         cursor: pointer;
+      }
+      a {
+        color: white;
+        text-decoration: none;
       }
     }
     .submit-btn {

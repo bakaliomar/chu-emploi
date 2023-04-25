@@ -577,3 +577,10 @@ onsubmit = handleSubmit(() => {
   }
 }
 </style>
+<route lang="json5">
+{
+  meta: {
+    auth: "guest",
+  },
+}
+</route>

@@ -10,17 +10,17 @@ export default (
 ): Context => {
   const { notify } = useNotification();
   const context: Partial<Context> = {
-    auth: { currentUser: {}, isAuth: false, token: "" },
+    auth: { currentUser: {}, isAuth: false, accessToken: "" },
     to,
     from,
     next,
     notify,
   };
   if (getActivePinia()) {
-    const { currentUser, isAuth, token } = useAuthStore();
+    const { currentUser, isAuth, accessToken } = useAuthStore();
     context.auth = {
       isAuth,
-      token,
+      accessToken,
       currentUser,
     };
   }

@@ -8,7 +8,7 @@ declare module "*.vue" {
   export default component;
 }
 
-export interface Concour {
+declare interface Concour {
   id: string;
   name: string;
   description: string;
@@ -18,7 +18,15 @@ export interface Concour {
   concourSpeciality: { speciality: { name: string; id: string } }[];
 }
 
-export interface CurrentUser {
+declare interface Header {
+  key: string;
+  value: string;
+  style?: string;
+  align?: string;
+  sort?: boolean;
+}
+
+declare interface CurrentUser {
   first_name: string;
   last_name: string;
   email: string;
@@ -33,13 +41,13 @@ declare interface Context {
   next: import("vue-router").NavigationGuardNext;
   auth: {
     isAuth: boolean;
-    token: string;
+    accessToken: string;
     currentUser: Partial<import("@/utils/User").default>;
   };
   notify: (args: NotifyArgs) => void;
 }
 
-export interface Paginate {
+declare interface Paginate {
   currentPage: number;
   lastPage: number;
   next: number | null;
