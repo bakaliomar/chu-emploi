@@ -1,6 +1,6 @@
 export default ({ next, auth }: Context) => {
   if (auth?.isAuth) {
-    next("/");
+    next();
     return false;
   }
   return true;

@@ -1,6 +1,6 @@
 import { useNotification } from "@kyvg/vue3-notification";
 
-export default ({ next, auth, i18n }: Context) => {
+export default ({ next, auth }: Context) => {
   const { notify } = useNotification();
   if (!auth?.currentUser.isAdmin) {
     notify({

@@ -59,7 +59,7 @@ const onSubmit = handleSubmit(() => {
       await setAccessToken(data.access_token);
       await setRefreshToken(data.refresh_token);
       await fetchUser();
-      await router.push("/");
+      await router.push("/concours/new");
     })
     .finally(() => {
       loading.value = false;

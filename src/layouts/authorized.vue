@@ -1,7 +1,7 @@
 <template lang="pug">
 #authorized-layout
   Navbar
-  #page-content
+  #page-content.mt-4
     RouterView
   #page-footer.text-center Copyright © 2023 CHU Mohammed VI - Tanger
   </template>
@@ -11,10 +11,10 @@ import Navbar from "@/components/Navbar.vue";
 <style lang="scss">
 #authorized-layout {
   min-height: 100vh;
+  background-color: #fbfbfc;
   #page-content {
     min-height: calc(100vh - 130px);
     height: 100%;
-    background-color: #fbfbfc;
   }
   #page-footer {
     font-weight: 700;

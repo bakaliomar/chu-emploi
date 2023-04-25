@@ -54,11 +54,14 @@ export class AxiosSingleton {
           if (err.response?.status === 401) {
             getActivePinia();
             const auth = useAuthStore();
-            const { status, data } = await axios.get("/auth/refresh", {
-              headers: {
-                Authorization: `Bearer ${auth.refreshToken}`,
-              },
-            });
+            const { status, data } = await axios.get(
+              `${import.meta.env.VITE_API_BASE_URL}/auth/refresh`,
+              {
+                headers: {
+                  Authorization: `Bearer ${auth.refreshToken}`,
+                },
+              }
+            );
             if (status === 200) {
               auth.setAccessToken(data.access_token);
               auth.setRefreshToken(data.refresh_token);

@@ -36,7 +36,7 @@ export default async (
         /* @vite-ignore */ `../middleware/${middle}.ts`
       );
       pass = await exec.default(ctx);
-      if (!pass) break;
+      if (pass) break;
     }
   pass && ctx.next();
 };
