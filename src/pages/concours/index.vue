@@ -1,9 +1,11 @@
 <template lang="pug">
 .concours-index.container
+  ConfirmModal(ref="confirm_modal")
+  PDFViewerModal(:source="source" v-if="showPdf" @close="showPdf = false")
   .d-flex.justify-content-between.align-items-center
     h1.title Concours
     .ajouter-btn
-      RouterLink(to="/concours/new") + Ajouter 
+      RouterLink(:to="{name: 'concours_new'}") + Ajouter 
   Table.bordered.mt-3(:header="header" :data="concours")
     template(v-slot:loading v-if="loading")
       Loader
@@ -13,12 +15,20 @@
       .concours-item {{ dateFormat(col) }}
     template(v-slot:concourDate="{ col }")
       .concours-item {{ dateFormat(col) }}
-    template(v-slot:closed={ col })
+    template(v-slot:closed="{ col }")
       .concours-item.text-center
         svg.check(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" v-if="col")
           path(d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z")
         svg.xmark(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" v-else)
           path(d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z")
+    template(v-slot:anounce="{ col, row }")
+      .concours-item.anounce-link(@click="openAnounce(row.id)") {{ startCase(col.split(".")[0]) }}
+    template(v-slot:options="{ row }")
+      Options.justify-content-end
+        .menu-item
+          RouterLink.d-flex.w-100.h-100(:to="{name: 'concours_id', params: { id: row.id }}") Editer
+        .menu-item.text-start.text-danger(@click="deleteConcour(row.id)") Suprimer
+          
 
 
 </template>
@@ -28,6 +38,11 @@ import format from "date-fns/formatISO9075";
 import useAxios from "@/composables/useAxios";
 import Table from "@/components/Table.vue";
 import Loader from "@/components/Loader.vue";
+import Options from "@/components/Options.vue";
+import ConfirmModal from "@/components/ConfirmModal.vue";
+import { useNotification } from "@kyvg/vue3-notification";
+import PDFViewerModal from "@/components/PDFViewerModal.vue";
+import { startCase } from "lodash";
 
 const { axios } = useAxios();
 const concours = ref<Concour[]>([]);
@@ -40,6 +55,10 @@ const pagination = ref<Paginate>({
   total: 0,
 });
 const loading = ref(false);
+const confirm_modal = ref<typeof ConfirmModal | null>(null);
+const { notify } = useNotification();
+const source = ref("");
+const showPdf = ref(false);
 
 const header: Header[] = [
   {
@@ -61,7 +80,7 @@ const header: Header[] = [
   },
   {
     key: "concourDate",
-    value: "Date de clôture",
+    value: "Date de concour",
   },
   {
     key: "closed",
@@ -91,6 +110,36 @@ function loadConcours() {
     });
 }
 
+const deleteConcour = async (id: string) => {
+  const ok = await confirm_modal.value?.show({
+    title: "Suprimer une Concour",
+    message: "êtes-vous sûr de vouloir supprimer ce concour",
+  });
+
+  if (ok) {
+    axios.delete(`/concours/${id}`).then(() => {
+      notify({
+        title: "Concour supprimé avec succès",
+        type: "success",
+      });
+      loadConcours();
+    });
+  }
+};
+
+function openAnounce(id: string) {
+  axios
+    .get(`/concours/${id}/anounce`, {
+      headers: {
+        responseType: "blob",
+      },
+    })
+    .then(({ data }) => {
+      source.value = window.URL.createObjectURL(new Blob([data as string]));
+      showPdf.value = true;
+    });
+}
+
 onBeforeMount(() => {
   loadConcours();
 });
@@ -105,6 +154,15 @@ onBeforeMount(() => {
     font-weight: 600;
     line-height: 40px;
     letter-spacing: 1px;
+  }
+
+  .anounce-link {
+    text-decoration: none;
+    color: $primary-color;
+    size: 18px;
+    font-weight: 400;
+    line-height: 36px;
+    cursor: pointer;
   }
 
   .concours-item {
