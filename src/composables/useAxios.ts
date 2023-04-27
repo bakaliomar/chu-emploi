@@ -54,8 +54,9 @@ export class AxiosSingleton {
           if (err.response?.status === 401) {
             getActivePinia();
             const auth = useAuthStore();
-            const { status, data } = await axios.get(
+            const { status, data } = await axios.post(
               `${import.meta.env.VITE_API_BASE_URL}/auth/refresh`,
+              {},
               {
                 headers: {
                   Authorization: `Bearer ${auth.refreshToken}`,

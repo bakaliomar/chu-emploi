@@ -1,7 +1,7 @@
 <template lang="pug">
 .more-options
-  svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512")
-    path(d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z")
+  svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" @click="toggleShowMoreOptions")
+    path(d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z")
   .more-options-menu(v-if="showMoreOptions" v-on-clickaway="toggleShowMoreOptions")
     slot
 </template>
@@ -19,6 +19,13 @@ const toggleShowMoreOptions = (): void => {
 .more-options {
   position: relative;
   display: flex;
+
+  svg {
+    width: 32px;
+    height: 32px;
+    font-weight: 400;
+    cursor: pointer;
+  }
 
   .more-options-button {
     width: 24px;

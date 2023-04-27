@@ -436,30 +436,8 @@ onsubmit = handleSubmit(() => {
 </script>
 <style lang="scss">
 .condidature-container {
-  .primary-title {
-    font-family: "Arial";
-    font-style: normal;
-    font-weight: 700;
-    font-size: 25px;
-    line-height: 29px;
-    color: #10529e;
-  }
-
   .hr {
     border: 1px solid #b7b7b7;
-  }
-
-  label {
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 21px;
-    color: #000000;
-    &.required::after,
-    &.arbic-required::before {
-      content: "*";
-      color: red;
-    }
   }
 
   .secondary-title {

@@ -78,8 +78,7 @@ const onSubmit = handleSubmit(() => {
       width: 100%;
 
       .login-card-body {
-        margin-top: 6.9rem;
-        margin-bottom: 5.8rem;
+        margin-top: 3rem;
         margin-left: -2px;
         form {
           background-color: $white;
@@ -139,26 +138,22 @@ const onSubmit = handleSubmit(() => {
 
       @include media-breakpoint-down(xxl) {
         .login-card-body {
-          margin-top: 6rem;
-          margin-bottom: 5rem;
+          margin-top: 2.8rem;
         }
       }
       @include media-breakpoint-down(xl) {
         .login-card-body {
-          margin-top: 5.2rem;
-          margin-bottom: 4.4rem;
+          margin-top: 2.8rem;
         }
       }
       @include media-breakpoint-down(lg) {
         .login-card-body {
-          margin-top: 5.2rem;
-          margin-bottom: 4.4rem;
+          margin-top: 2.8rem;
         }
       }
       @include media-breakpoint-down(md) {
         .login-card-body {
-          margin-top: 5.2rem;
-          margin-bottom: 4.4rem;
+          margin-top: 2.8rem;
         }
       }
     }
@@ -168,7 +163,7 @@ const onSubmit = handleSubmit(() => {
         flex-direction: column;
         .login-card-body {
           width: 100% !important;
-          margin-top: -3.6rem;
+          margin-top: -2.6rem;
           svg {
             display: none;
           }
