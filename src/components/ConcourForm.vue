@@ -12,48 +12,49 @@
         label Lieu du poste
         input.form-control.shadow.bg-body.rounded(type='text' v-model="location")
         small.error {{ errors.location }}
+    .row.mt-5
       .form-group.col-12.mt-3
         label Description
         textarea.form-control.shadow.bg-body.rounded(type='text' v-model="description")
         small.error {{ errors.description }}
-      .row.mt-3
-        .form-group.col-12.col-md-6
-          label.required Date de clôture
-          Datepicker.shadow.bg-body(v-model="closingDate")
-          small.error {{ errors.closingDate }}
-        .form-group.col-12.col-md-6
-          label.required Date de concour
-          Datepicker.shadow.bg-body(v-model="concourDate")
-          small.error {{ errors.concourDate }}
-      .row.mt-3.justify-content-center
-        .form-group.col-12.col-md-6
-          label.required Postes Nombre
-          input.form-control.shadow.bg-body.rounded(type='number' v-model="positionsNumber")
-          small.error {{ errors.location }}
-        .col-12.col-md-6.d-flex.align-items-center
-          .form-group
-            input.form-check-input.checkk(type='checkbox' v-model="closed")
-            span.ms-2.form-check-label.text-wrap.fw-bold clôture
-      .specialities-container.mt-3.row
-        .specialities.d-flex.flex-row-reverse.flex-wrap
-          .speciality.py-2.px-1.ms-2.d-inline-flex.align-items-center.flex-nowrap.mt-1(v-for="speciality in selectedSpecialities" :key="speciality.id")
-            span.me-2.error.fw-bold.cursor-pointer(@click="unselectCategories(speciality.id)") X
-            .speciality-value {{speciality.name}}
-        .col-12.mt-2
-          label.required Sp&eacute;ialit&eacute;
-          br
-          select.form-select.mt-2.shadow.bg-body.rounded(@click="selectCategories($event.target.value)")
-            option(disabled="disabled" selected="selected") Choisis une speciality
-            option(v-for="item in loadedSpecialities" :key="item.id" :value="item.id") {{ item.name }}
-          small.error {{ errors.specialities }}
-      .row.mt-3 
-        .form-group.col-12
-          label(:class="{'required': isNew}") Anounce
-          input.form-control.shadow.bg-body.rounded(type='file' ref="uploader")
-          span(v-if="!fileError") Types de fichiers accept&eacute;s : pdf, Taille max. des fichiers : 5 MB
-          small.error(v-else) {{ fileError }}
-      .d-flex.justify-content-center.mt-4
-        button.submit-btn.rounded-pill.px-5.py-1(type='submit') Submit
+    .row.mt-3
+      .form-group.col-12.col-md-6
+        label.required Date de clôture
+        Datepicker.shadow.bg-body(v-model="closingDate")
+        small.error {{ errors.closingDate }}
+      .form-group.col-12.col-md-6
+        label.required Date de concour
+        Datepicker.shadow.bg-body(v-model="concourDate")
+        small.error {{ errors.concourDate }}
+    .row.mt-3.justify-content-center
+      .form-group.col-12.col-md-6
+        label.required Postes Nombre
+        input.form-control.shadow.bg-body.rounded(type='number' v-model="positionsNumber")
+        small.error {{ errors.location }}
+      .col-12.col-md-6.d-flex.align-items-center
+        .form-group
+          input.form-check-input.checkk(type='checkbox' v-model="closed")
+          span.ms-2.form-check-label.text-wrap.fw-bold clôture
+    .specialities-container.mt-3.row
+      .specialities.d-flex.flex-row-reverse.flex-wrap
+        .speciality.py-2.px-1.ms-2.d-inline-flex.align-items-center.flex-nowrap.mt-1(v-for="speciality in selectedSpecialities" :key="speciality.id")
+          span.me-2.error.fw-bold.cursor-pointer(@click="unselectCategories(speciality.id)") X
+          .speciality-value {{speciality.name}}
+      .col-12.mt-2
+        label.required Sp&eacute;ialit&eacute;
+        br
+        select.form-select.mt-2.shadow.bg-body.rounded(@click="selectCategories($event.target.value)")
+          option(disabled="disabled" selected="selected") Choisis une speciality
+          option(v-for="item in loadedSpecialities" :key="item.id" :value="item.id") {{ item.name }}
+        small.error {{ errors.specialities }}
+    .row.mt-3 
+      .form-group.col-12
+        label(:class="{'required': isNew}") Anounce
+        input.form-control.shadow.bg-body.rounded(type='file' ref="uploader")
+        span(v-if="!fileError") Types de fichiers accept&eacute;s : pdf, Taille max. des fichiers : 5 MB
+        small.error(v-else) {{ fileError }}
+    .d-flex.justify-content-center.mt-4
+      button.submit-btn.rounded-pill.px-5.py-1(type='submit') Submit
   </template>
 <script lang="ts" setup>
 import { onBeforeMount, ref, computed } from "vue";
@@ -71,7 +72,9 @@ import "@vuepic/vue-datepicker/dist/main.css";
 const props = defineProps({
   concour: {
     type: Object,
-    default: () => ({}),
+    default: () => ({
+      closed: false,
+    }),
   },
 });
 
@@ -200,7 +203,7 @@ function addConcour() {
         type: "success",
         title: "Concour ajouter avec successe",
       });
-      router.push("/concours");
+      router.push("/admin/concours");
     });
 }
 
@@ -232,7 +235,7 @@ function editConcour() {
         type: "success",
         title: "Concour edite avec successe",
       });
-      router.push("/concours");
+      router.push("/admin/concours");
     });
 }
 

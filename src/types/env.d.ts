@@ -18,6 +18,85 @@ declare interface Concour {
   concourSpeciality: { speciality: { name: string; id: string } }[];
 }
 
+/*
+id: true,
+        createdAt: true,
+        establishment: true,
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            title: true,
+            cin: true,
+          },
+        },
+        speciality: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        concour: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+*/
+
+declare interface CandidatureIndex {
+  id: string;
+  createdAt: string;
+  establishment: string;
+  user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    title: string;
+    cin: string;
+  };
+  speciality: { id: string; name: string };
+  concour: { id: string; name: string };
+}
+
+declare interface CandidatureShow {
+  id?: string;
+  state: string;
+  motive: string;
+  file?: File;
+  user: {
+    title: string;
+    cin: string;
+    firstName: string;
+    firstNameArabic: string;
+    lastName: string;
+    lastNameArabic: string;
+    birthDate: string;
+    birthPlace: string;
+    birthPlaceArabic: string;
+    address: string;
+    addressArabic: string;
+    postalCode: string;
+    city: string;
+    cityArabic: string;
+    email: string;
+    phone: string;
+  };
+  degreeLevel: string;
+  degreeTitle: string;
+  degreeSpeciality: string;
+  establishmentName: string;
+  graduationCountry: string;
+  graduationYear: string;
+  establishment: string;
+  speciality: { id: string; name: string };
+  concour: { id: string; name: string };
+}
+
 declare interface Header {
   key: string;
   value: string;

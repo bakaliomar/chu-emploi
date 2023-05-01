@@ -1,6 +1,6 @@
 export default ({ next, auth }: Context) => {
   if (!auth?.isAuth) {
-    next("/login");
+    next("/admin/login");
     return false;
   }
   return true;

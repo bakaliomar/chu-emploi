@@ -1,6 +1,6 @@
 <template lang="pug">
 .container.condidature-container
-  .candidature-card.px-3.py-4.border.my-5(v-if="!isDone")
+  .custom-card(v-if="!isDone")
     form(@submit.prevent="onSubmit" v-if="!confirmationStep")
       div
         h1.primary-title Formulaire de candidature
@@ -142,7 +142,16 @@
           label.required Ann&eacute;e d&apos;obtention 
           input.form-control.shadow.bg-body.rounded(type='text' v-model="graduationYear")
           small.error {{ errors.graduationYear }}
-      .form-group.col-12.col-md-6
+        .form-group.col-12.col-md-6
+          label.required Profession actuelle
+          br
+          select.form-select.shadow.bg-body.rounded(v-model="currentJob")
+            option(value="Autres") Autres
+            option(value="Non-fonctionnaire") Non-fonctionnaire
+            option(value="Fonctionnaire") Fonctionnaire
+            option(value="Ex-militaire") Ex-militaire
+            option(value="Ex-combattant") Ex-combattant
+          small.error {{ errors.currentJob }}
       .mt-4
         h4.secondary-title Documents attach&eacute;s 
         hr.hr.mt-0
@@ -171,86 +180,7 @@
         |Pour modifier vos informations, utilisez le bouton Précédent en bas de cette page.
       hr
       .confirmation-step-content
-        .pair-title-value
-          .pair-title Concours:
-          .pair-value {{ getConcour?.name || ""}}
-        .pair-title-value
-          .pair-title Spécialité:
-          .pair-value {{ getSpeciality?.name || "" }}
-        .pair-title-value
-          .pair-title Titre:
-          .pair-value {{ title }}
-        .pair-title-value
-          .pair-title CIN:
-          .pair-value {{ cin }}
-        .d-flex.justify-content-between.align-items-center
-          .pair-title-value
-            .pair-title Prénom:
-            .pair-value {{ firstName }}
-          .pair-title-value.arabic 
-            .pair-title : الإسم الشخصي
-            .pair-value {{ firstNameArabic }}
-        .d-flex.justify-content-between.align-items-center
-          .pair-title-value
-            .pair-title Nom:
-            .pair-value {{ lastName }}
-          .pair-title-value.arabic 
-            .pair-title : الإسم العائلي
-            .pair-value {{ lastNameArabic }}
-        .pair-title-value
-          .pair-title Date de naissance:
-          .pair-value {{ dateFormat(birthDate) }}
-        .d-flex.justify-content-between.align-items-center
-          .pair-title-value
-            .pair-title Lieu de naissance:
-            .pair-value {{ birthPlace }}
-          .pair-title-value.arabic 
-            .pair-title : مكان الازدياد
-            .pair-value {{ birthPlaceArabic }}
-        .d-flex.justify-content-between.align-items-center
-          .pair-title-value
-            .pair-title Adresse:
-            .pair-value {{ address }}
-          .pair-title-value.arabic 
-            .pair-title : العنوان
-            .pair-value {{ addressArabic }}
-        .d-flex.justify-content-between.align-items-center
-          .pair-title-value
-            .pair-title Ville:
-            .pair-value {{ city }}
-          .pair-title-value.arabic 
-            .pair-title : المدينة
-            .pair-value {{ cityArabic }}
-        .pair-title-value
-          .pair-title Code postal:
-          .pair-value {{ postalCode }}
-        .pair-title-value
-          .pair-title Email:
-          .pair-value {{ email }}
-        .pair-title-value
-          .pair-title Téléphone:
-          .pair-value {{ phone }}
-        .pair-title-value
-          .pair-title Titre du diplôme:
-          .pair-value {{ degreeTitle }}
-        .pair-title-value
-          .pair-title Spécialité du diplôme:
-          .pair-value {{ degreeSpeciality }}
-        .pair-title-value
-          .pair-title Nom de l’établissement:
-          .pair-value {{ establishmentName }}
-        .pair-title-value
-          .pair-title Etablissement:
-          .pair-value {{ establishment }}
-        .pair-title-value
-          .pair-title Année d’obtention:
-          .pair-value {{ graduationYear }}
-        .pair-title-value
-          .pair-title Pays:
-          .pair-value {{ graduationCountry }}
-        .pair-title-value
-          .pair-title Documents attachés:
-          .pair-value {{ file ? file.name : "" }}
+        CandidatureShow(:candidature="candidature")
         .d-flex.justify-content-center.mt-5
           button.btn.btn-precedent.rounded-pill.px-5.py-2(@click="confirmationStep = false") Précédent
           button.btn.btn-suivant.rounded-pill.px-5.py-2.ms-3(@click="sendData") Envoyer
@@ -269,12 +199,11 @@ import { useField, useForm } from "vee-validate";
 import * as yup from "yup";
 import "bootstrap/dist/css/bootstrap.min.css";
 import useAxios from "@/composables/useAxios";
-import { serialize } from "object-to-formdata";
 import { useNotification } from "@kyvg/vue3-notification";
 import Datepicker from "@vuepic/vue-datepicker";
-import format from "date-fns/formatISO9075";
 import "@vuepic/vue-datepicker/dist/main.css";
 import checked from "@/assets/img/checked.png";
+import CandidatureShow from "@/components/CandidatureShow.vue";
 
 const { handleSubmit, errors } = useForm({
   validationSchema: yup.object({
@@ -303,6 +232,7 @@ const { handleSubmit, errors } = useForm({
     graduationCountry: yup.string().required(),
     graduationYear: yup.number().required(),
     establishment: yup.string().required(),
+    currentJob: yup.string().required(),
   }),
 });
 
@@ -343,6 +273,7 @@ const { value: degreeTitle } = useField("degreeTitle");
 const { value: degreeSpeciality } = useField("degreeSpeciality");
 const { value: establishmentName } = useField("establishmentName");
 const { value: graduationCountry } = useField("graduationCountry");
+const { value: currentJob } = useField("currentJob");
 const { value: graduationYear } = useField("graduationYear");
 const { value: establishment } = useField("establishment", undefined, {
   initialValue: "public",
@@ -356,15 +287,45 @@ const getConcour = computed(() => {
   return concours.value.find((obj) => obj.id === concour.value);
 });
 
+const candidature = computed(() => {
+  return {
+    user: {
+      title: title.value,
+      cin: cin.value,
+      firstName: firstName.value,
+      firstNameArabic: firstNameArabic.value,
+      lastName: lastName.value,
+      lastNameArabic: lastNameArabic.value,
+      birthDate: birthDate.value,
+      birthPlace: birthPlace.value,
+      birthPlaceArabic: birthPlaceArabic.value,
+      address: address.value,
+      addressArabic: addressArabic.value,
+      postalCode: postalCode.value,
+      city: city.value,
+      cityArabic: cityArabic.value,
+      email: email.value,
+      phone: phone.value,
+    },
+    currentJob: currentJob.value,
+    degreeLevel: degreeLevel.value,
+    degreeTitle: degreeTitle.value,
+    degreeSpeciality: degreeSpeciality.value,
+    establishmentName: establishmentName.value,
+    graduationCountry: graduationCountry.value,
+    graduationYear: graduationYear.value,
+    establishment: establishment.value,
+    speciality: getSpeciality.value,
+    concour: getConcour.value,
+    file: file.value,
+  };
+});
+
 onBeforeMount(() => {
   axios.get("/concours/autocomplete").then(({ data }) => {
     concours.value = data;
   });
 });
-
-function dateFormat(val: string): string {
-  return val ? format(new Date(val)) : "N/A";
-}
 
 function loadSpecialities() {
   if (!concour.value) {
@@ -402,6 +363,7 @@ function sendData() {
   formData.append("degreeSpeciality", degreeSpeciality.value as string);
   formData.append("concourId", concour.value as string);
   formData.append("establishment", establishment.value as string);
+  formData.append("currentJob", currentJob.value as string);
   formData.append("establishmentName", establishmentName.value as string);
   formData.append("specialityId", speciality.value as string);
 
@@ -451,11 +413,6 @@ onsubmit = handleSubmit(() => {
     color: #10529e;
   }
 
-  .candidature-card {
-    border-radius: 35px;
-    background-color: white;
-  }
-
   .submit-btn {
     background-color: #10529e;
     opacity: 0.96;
@@ -489,30 +446,6 @@ onsubmit = handleSubmit(() => {
     }
     hr {
       border-bottom: 1px solid #b7b7b7;
-    }
-    .pair-title-value {
-      display: flex;
-      .pair-title {
-        font-style: normal;
-        font-weight: 700;
-        font-size: 18px;
-        line-height: 45px;
-      }
-
-      .pair-value {
-        font-style: normal;
-        font-weight: 500;
-        font-size: 18px;
-        line-height: 45px;
-        margin-left: 8px;
-      }
-
-      &.arabic {
-        flex-direction: row-reverse;
-        .pair-value {
-          margin-right: 8px;
-        }
-      }
     }
     .btn {
       font-style: normal;

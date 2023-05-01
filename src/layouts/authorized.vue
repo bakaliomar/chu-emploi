@@ -13,7 +13,7 @@ import Navbar from "@/components/Navbar.vue";
   min-height: 100vh;
   background-color: #fbfbfc;
   #page-content {
-    min-height: calc(100vh - 130px);
+    min-height: calc(100vh - 164px);
     height: 100%;
   }
   #page-footer {

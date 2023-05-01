@@ -70,23 +70,5 @@ defineExpose({
   .mxw-130 {
     min-width: 130px;
   }
-
-  .confirm-btn {
-    height: 36px;
-    border: 1px solid $primary-color;
-    border-radius: 16px;
-    font-weight: 500;
-    cursor: pointer;
-
-    &.outline-primary {
-      color: $primary-color;
-      background-color: white;
-    }
-
-    &.primary {
-      color: white;
-      background-color: $primary-color;
-    }
-  }
 }
 </style>

@@ -34,8 +34,8 @@ const props = defineProps({
 const source = ref("");
 
 const getSpecialities = computed(() => {
-  return props.concour.concourSpeciality.length > 2
-    ? props.concour.concourSpeciality.subarray(0, 3)
+  return props.concour.concourSpeciality.length > 3
+    ? props.concour.concourSpeciality.slice(0, 3)
     : props.concour.concourSpeciality;
 });
 
