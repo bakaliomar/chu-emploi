@@ -5,7 +5,7 @@
   .d-flex.justify-content-between.align-items-center
     h1.title Concours
     .ajouter-btn
-      RouterLink(:to="{name: 'concours_new'}") + Ajouter 
+      RouterLink(:to="{name: 'admin_concours_new'}") + Ajouter 
   Table.bordered.mt-3(:header="header" :data="concours")
     template(v-slot:loading v-if="loading")
       Loader
@@ -26,8 +26,10 @@
     template(v-slot:options="{ row }")
       Options.justify-content-end
         .menu-item
-          RouterLink.d-flex.w-100.h-100(:to="{name: 'concours_id', params: { id: row.id }}") Editer
+          RouterLink.d-flex.w-100.h-100(:to="{name: 'admin_concours_id', params: { id: row.id }}") Editer
         .menu-item.text-start.text-danger(@click="deleteConcour(row.id)") Suprimer
+    template(#not_found)
+      Notfound(entity="Candidature")
           
 
 
@@ -43,6 +45,7 @@ import ConfirmModal from "@/components/ConfirmModal.vue";
 import { useNotification } from "@kyvg/vue3-notification";
 import PDFViewerModal from "@/components/PDFViewerModal.vue";
 import { startCase } from "lodash";
+import Notfound from "@/components/Notfound.vue";
 
 const { axios } = useAxios();
 const concours = ref<Concour[]>([]);

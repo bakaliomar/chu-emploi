@@ -20,7 +20,7 @@ router.beforeEach(async (to, from, next) => {
 router.beforeEach(async (to, from) => {
   if (
     getActivePinia() &&
-    !["login", "logout", "index", "candidature"].includes(
+    !["admin_login", "admin_logout", "index", "candidature"].includes(
       to.name?.toString() || ""
     )
   ) {
