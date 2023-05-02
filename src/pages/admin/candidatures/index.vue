@@ -29,14 +29,16 @@
         select.form-select.shadow.bg-body.rounded(@click="searchPage" v-model="speciality")
           option(disabled selected) Choisis une speciality
           option(v-for="item in specialities" :key="item.id" :value="item.id") {{ item.name }}
-    RouterLink.clear-filters(:to="route.path" v-if="showClear") clear filters
+    RouterLink.clear-filters.action(:to="route.path" v-if="showClear") clear filters
   Table.bordered.mt-4(:header="header" :data="candidatures")
     template(v-slot:loading v-if="loading")
       Loader
-    template(v-slot:options="{ row }")
-      Options.justify-content-end
-        .menu-item Editer
-        .menu-item.text-start.text-danger Suprimer
+    template(v-slot:user.lastName="{ row }")
+      RouterLink.candidatures-item.action(:to="{ name: 'admin_candidatures_id', params: { id: row.id } }" target="_blank") {{row.user.lastName}}
+    template(v-slot:user.email="{ col }")
+      a.candidatures-item.action(:href="`mailto:${col}`") {{ col }}
+    template(v-slot:state="{ col }")
+      .candidatures-item.badge(:class="col") {{ col }}
     template(#not_found)
       Notfound(entity="Candidature")
 </template>
@@ -116,6 +118,10 @@ const header: Header[] = [
   {
     key: "establishment",
     value: "Etabl",
+  },
+  {
+    key: "state",
+    value: "Status",
   },
 ];
 
