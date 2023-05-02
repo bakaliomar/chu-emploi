@@ -1,17 +1,17 @@
 <template lang="pug">
 .navbar-container
-  nav.navbar.container
+  nav.navbar.container.pb-0
     .logo
       img(:src="logo")
-    ul.nav-links
+    ul.nav-links.mb-0
       span.hamburger(@click="isMenuOpen = !isMenuOpen") {{ isMenuOpen ? "X" : "&#9776;" }}
       .menu(:class="{'d-flex': isMenuOpen}")
-        li(:class="{ 'active': $route.path.includes('/concours') }")
-          a(href="/concours") Concours
-        li
-          a(href="/") About
-        li
-          a(href="/") Services
+        li(:class="{ 'active': $route.path.includes('admin/concours') }")
+          RouterLink(:to="{ name: 'admin_concours' }" ) Concours
+        li(:class="{ 'active': $route.path.includes('admin/candidatures') }")
+          RouterLink(:to="{ name: 'admin_candidatures' }") Candidatures
+        li(:class="{ 'active': $route.path.includes('/admin/specialities') }")
+          RouterLink(:to="{ name: 'admin_specialities' }") Specialities
 </template>
 <script lang="ts" setup>
 import { ref } from "vue";

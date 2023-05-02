@@ -12,6 +12,21 @@
   margin: 0;
 }
 
+.action {
+  color: $primary-color;
+  text-decoration: none;
+}
+
+.ajouter-btn, .ajouter-btn a {
+  text-decoration: none;
+  color: $primary-color;
+  size: 24px;
+  font-weight: 600;
+  line-height: 40px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
 .custom-card {
   border-radius: 35px;
   background-color: white;

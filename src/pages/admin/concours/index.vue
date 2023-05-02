@@ -3,7 +3,7 @@
   ConfirmModal(ref="confirm_modal")
   PDFViewerModal(:source="source" v-if="showPdf" @close="showPdf = false")
   .d-flex.justify-content-between.align-items-center
-    h1.title Concours
+    h1.primary-title Concours List
     .ajouter-btn
       RouterLink(:to="{name: 'admin_concours_new'}") + Ajouter 
   Table.bordered.mt-3(:header="header" :data="concours")
@@ -150,15 +150,6 @@ onBeforeMount(() => {
 
 <style lang="scss">
 .concours-index {
-  .ajouter-btn a {
-    text-decoration: none;
-    color: $primary-color;
-    size: 24px;
-    font-weight: 600;
-    line-height: 40px;
-    letter-spacing: 1px;
-  }
-
   .anounce-link {
     text-decoration: none;
     color: $primary-color;
