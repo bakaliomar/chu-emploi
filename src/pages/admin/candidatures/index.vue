@@ -1,11 +1,12 @@
 <template lang="pug">
 .candidatures-index.container
   ConfirmModal(ref="confirm_modal")
+  h1.primary-title Candidatures List
   .d-flex.justify-content-between.align-items-center
-    h1.primary-title Candidatures List
     .d-flex.align-items-center 
       Switcher(v-model="archived" @click="searchPage")
       span.ps-2 Archived
+    button.confirm-btn.primary(@click="downloadData") Download
   .filters-container.d-flex.justify-content-between.align-items-end.mt-3
     .filters.d-flex.align-items-center
       .form-group.filter-group
@@ -34,13 +35,14 @@
     template(v-slot:loading v-if="loading")
       Loader
     template(v-slot:user.lastName="{ row }")
-      RouterLink.candidatures-item.action(:to="{ name: 'admin_candidatures_id', params: { id: row.id } }" target="_blank") {{row.user.lastName}}
+      RouterLink.candidatures-item.action(:to="{ name: 'admin_candidatures_id', params: { id: (row as CandidatureIndex).id } }" target="_blank") {{(row as CandidatureIndex).user.lastName}}
     template(v-slot:user.email="{ col }")
       a.candidatures-item.action(:href="`mailto:${col}`") {{ col }}
     template(v-slot:state="{ col }")
-      .candidatures-item.badge(:class="col") {{ col }}
+      .candidatures-item.badge(:class="col") {{ getState(col.toString()) }}
     template(#not_found)
       Notfound(entity="Candidature")
+  Paginate(:paginate="pagination" @page-changed="pageChanged" )
 </template>
 <script lang="ts" setup>
 import { ref, watch, computed, onBeforeMount } from "vue";
@@ -56,13 +58,7 @@ import { useRouter, useRoute } from "vue-router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Notfound from "@/components/Notfound.vue";
 import Switcher from "@/components/Switcher.vue";
-
-/*
- UNTREATED
-  SHORTLISTED
-  REFUSED
-  ADMITTED
-*/
+import Paginate from "@/components/Pagination.vue";
 
 const { axios } = useAxios();
 const router = useRouter();
@@ -125,13 +121,26 @@ const header: Header[] = [
   },
 ];
 
+function pageChanged(page: number) {
+  pagination.value.currentPage = page;
+}
+
+function getState(state: string) {
+  return {
+    UNTREATED: "Non traité",
+    SHORTLISTED: "Présélectionné",
+    REFUSED: "Refusé",
+    ADMITTED: "Admis définitivement",
+  }[state];
+}
+
 const showClear = computed(() => {
   return !isEmpty(route.query);
 });
 
 const searchPage = () => {
   router.push({
-    name: route.name,
+    name: route.name!,
     query: {
       keyword: keyword.value || undefined,
       concour: concour.value || undefined,
@@ -152,6 +161,8 @@ function loadCandidatures() {
         speciality: speciality.value || undefined,
         archived: archived.value || undefined,
         state: state.value || undefined,
+        page: pagination.value.currentPage || 1,
+        perPage: 10,
       },
     })
     .then(({ data }) => {
@@ -177,6 +188,32 @@ function loadSpecialities() {
       specialities.value = data;
     });
   }
+}
+
+function downloadData() {
+  axios
+    .get("/candidatures/excel/download", {
+      headers: {
+        responseType: "blob",
+      },
+      params: {
+        keyword: keyword.value || undefined,
+        concour: concour.value || undefined,
+        speciality: speciality.value || undefined,
+        archived: archived.value || undefined,
+        state: state.value || undefined,
+      },
+    })
+    .then(({ data }) => {
+      const fileURL = window.URL.createObjectURL(new Blob([data as string]));
+      const fileLink = document.createElement("a");
+
+      fileLink.href = fileURL;
+      fileLink.setAttribute("download", "Candidatures.xlsx");
+      document.body.appendChild(fileLink);
+
+      fileLink.click();
+    });
 }
 
 watch(

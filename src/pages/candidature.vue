@@ -261,8 +261,12 @@ const { value: lastNameArabic } = useField("lastNameArabic");
 const { value: birthDate } = useField("birthDate");
 const { value: birthPlace } = useField("birthPlace");
 const { value: birthPlaceArabic } = useField("birthPlaceArabic");
-const { value: address } = useField("address");
-const { value: addressArabic } = useField("addressArabic");
+const { value: address } = useField("address", undefined, {
+  initialValue: "",
+});
+const { value: addressArabic } = useField("addressArabic", undefined, {
+  initialValue: "",
+});
 const { value: postalCode } = useField("postalCode");
 const { value: city } = useField("city");
 const { value: cityArabic } = useField("cityArabic");
@@ -287,37 +291,37 @@ const getConcour = computed(() => {
   return concours.value.find((obj) => obj.id === concour.value);
 });
 
-const candidature = computed(() => {
+const candidature = computed((): CandidatureShow => {
   return {
     user: {
       title: title.value,
-      cin: cin.value,
-      firstName: firstName.value,
-      firstNameArabic: firstNameArabic.value,
-      lastName: lastName.value,
-      lastNameArabic: lastNameArabic.value,
-      birthDate: birthDate.value,
-      birthPlace: birthPlace.value,
-      birthPlaceArabic: birthPlaceArabic.value,
-      address: address.value,
-      addressArabic: addressArabic.value,
-      postalCode: postalCode.value,
-      city: city.value,
-      cityArabic: cityArabic.value,
-      email: email.value,
-      phone: phone.value,
+      cin: cin.value as string,
+      firstName: firstName.value as string,
+      firstNameArabic: firstNameArabic.value as string,
+      lastName: lastName.value as string,
+      lastNameArabic: lastNameArabic.value as string,
+      birthDate: birthDate.value as string,
+      birthPlace: birthPlace.value as string,
+      birthPlaceArabic: birthPlaceArabic.value as string,
+      address: address.value as string,
+      addressArabic: addressArabic.value as string,
+      postalCode: postalCode.value as string,
+      city: city.value as string,
+      cityArabic: cityArabic.value as string,
+      email: email.value as string,
+      phone: phone.value as string,
     },
-    currentJob: currentJob.value,
-    degreeLevel: degreeLevel.value,
-    degreeTitle: degreeTitle.value,
-    degreeSpeciality: degreeSpeciality.value,
-    establishmentName: establishmentName.value,
-    graduationCountry: graduationCountry.value,
-    graduationYear: graduationYear.value,
-    establishment: establishment.value,
-    speciality: getSpeciality.value,
-    concour: getConcour.value,
-    file: file.value,
+    currentJob: currentJob.value as string,
+    degreeLevel: degreeLevel.value as string,
+    degreeTitle: degreeTitle.value as string,
+    degreeSpeciality: degreeSpeciality.value as string,
+    establishmentName: establishmentName.value as string,
+    graduationCountry: graduationCountry.value as string,
+    graduationYear: graduationYear.value as string,
+    establishment: establishment.value as string,
+    speciality: getSpeciality.value as { id: string; name: string },
+    concour: getConcour.value as { id: string; name: string },
+    file: file.value as File,
   };
 });
 

@@ -9,6 +9,8 @@
           path(fill="#FFFFFF" fill-opacity="1" d="M0,0L80,5.3C160,11,320,21,480,53.3C640,85,800,139,960,149.3C1120,160,1280,128,1360,112L1440,96L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z")
         form.flex-grow-1.d-flex.align-items-center.w-100(@submit.prevent="onSubmit")
           .inputs-wrapper.w-100.p-2
+            .chu-logo.text-center
+              img(:src="logo")
             .form-field.w-100.d-flex.align-items-center.mt-3
               .img-container.h-100.p-2
                 img.h-100(:src="userIcon")
@@ -33,6 +35,7 @@ import { useForm, useField } from "vee-validate";
 import useAxios from "@/composables/useAxios";
 import { useAuthStore } from "@/store/useAuth.store";
 import { useRouter } from "vue-router";
+import logo from "@/assets/img/chu-new.png";
 
 const { handleSubmit, errors } = useForm({
   validationSchema: yup.object({
@@ -59,7 +62,7 @@ const onSubmit = handleSubmit(() => {
       await setAccessToken(data.access_token);
       await setRefreshToken(data.refresh_token);
       await fetchUser();
-      await router.push("/concours/new");
+      await router.push("/admin/candidatures");
     })
     .finally(() => {
       loading.value = false;
@@ -80,6 +83,11 @@ const onSubmit = handleSubmit(() => {
       .login-card-body {
         margin-top: 3rem;
         margin-left: -2px;
+
+        .chu-logo img {
+          width: 90px;
+          height: 90px;
+        }
         form {
           background-color: $white;
           .form-field {
