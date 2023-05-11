@@ -65,8 +65,9 @@ declare interface CandidatureIndex {
 
 declare interface CandidatureShow {
   id?: string;
-  state: string;
-  motive: string;
+  state?: string;
+  motive?: string;
+  currentJob: string;
   file?: File;
   user: {
     title: string;

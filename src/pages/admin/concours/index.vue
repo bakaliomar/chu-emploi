@@ -12,9 +12,9 @@
     template(v-slot:location="{ col }")
       .concours-item {{ col ? col : "N/A" }}
     template(v-slot:closingDate="{ col }")
-      .concours-item {{ dateFormat(col) }}
+      .concours-item {{ dateFormat(col as string) }}
     template(v-slot:concourDate="{ col }")
-      .concours-item {{ dateFormat(col) }}
+      .concours-item {{ dateFormat(col as string) }}
     template(v-slot:closed="{ col }")
       .concours-item.text-center
         svg.check(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" v-if="col")
@@ -22,12 +22,12 @@
         svg.xmark(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" v-else)
           path(d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z")
     template(v-slot:anounce="{ col, row }")
-      .concours-item.anounce-link(@click="openAnounce(row.id)") {{ startCase(col.split(".")[0]) }}
+      .concours-item.anounce-link(@click="openAnounce((row as Concour).id)") {{ startCase((col as string).split(".")[0]) }}
     template(v-slot:options="{ row }")
       Options.justify-content-end
         .menu-item
-          RouterLink.d-flex.w-100.h-100(:to="{name: 'admin_concours_id', params: { id: row.id }}") Editer
-        .menu-item.text-start.text-danger(@click="deleteConcour(row.id)") Suprimer
+          RouterLink.d-flex.w-100.h-100(:to="{name: 'admin_concours_id', params: { id: (row as Concour).id }}") Editer
+        .menu-item.text-start.text-danger(@click="deleteConcour((row as Concour).id)") Suprimer
     template(#not_found)
       Notfound(entity="Candidature")
           

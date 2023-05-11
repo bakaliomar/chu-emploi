@@ -43,8 +43,8 @@
       .col-12.mt-2
         label.required Sp&eacute;ialit&eacute;
         br
-        select.form-select.mt-2.shadow.bg-body.rounded(@click="selectCategories($event.target.value)")
-          option(disabled="disabled" selected="selected") Choisis une speciality
+        select.form-select.mt-2.shadow.bg-body.rounded(@click="selectCategories(($event.target as HTMLInputElement).value)")
+          option(:disabled="true" :selected="true") Choisis une speciality
           option(v-for="item in loadedSpecialities" :key="item.id" :value="item.id") {{ item.name }}
         small.error {{ errors.specialities }}
     .row.mt-3 

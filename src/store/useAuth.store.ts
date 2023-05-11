@@ -44,7 +44,7 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   const logout = async () => {
-    return axios.delete("/api/logout").then(() => {
+    return axios.delete("/auth/logout").then(() => {
       accessToken.value = "";
       refreshToken.value = "";
       user.value = null;
