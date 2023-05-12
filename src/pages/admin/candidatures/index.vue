@@ -35,11 +35,11 @@
     template(v-slot:loading v-if="loading")
       Loader
     template(v-slot:user.lastName="{ row }")
-      RouterLink.candidatures-item.action(:to="{ name: 'admin_candidatures_id', params: { id: (row as CandidatureIndex).id } }" target="_blank") {{(row as CandidatureIndex).user.lastName}}
+      RouterLink.candidatures-item.action(:to="{ name: 'admin_candidatures_id', params: { id: row.id } }" target="_blank") {{row.user.lastName}}
     template(v-slot:user.email="{ col }")
       a.candidatures-item.action(:href="`mailto:${col}`") {{ col }}
     template(v-slot:state="{ col }")
-      .candidatures-item.badge(:class="col") {{ getState(col.toString()) }}
+      .candidatures-item.badge(:class="col") {{ getState(col) }}
     template(#not_found)
       Notfound(entity="Candidature")
   Paginate(:paginate="pagination" @page-changed="pageChanged" )

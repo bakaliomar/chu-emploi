@@ -4,7 +4,7 @@ ul.pagination.custom-pagination(v-if="paginate && paginate.lastPage > 1")
     a.page-link( @click="prevPage()" @keyup.enter="prevPage()" :to="{ path: $route.path, query: { ...$route.query, page: selected - 1 } }" target="_self")
     svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512")
       path(d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z")
-  li.page-item(v-for="page in pages" :class="[page.selected ? 'active' : '', (page.disabled as boolean) ? 'disabled' : '']")
+  li.page-item(v-for="page in pages" :class="[page.selected ? 'active' : '', page.disabled ? 'disabled' : '']")
     a.page-link(v-if="page.disabled" :to="{ path: $route.path, query: { ...$route.query, page: page.content } }" target="_self" ) {{ page.content }}
     a.page-link(  @click="handlePageSelected(page.index + 1)" @keyup.enter="handlePageSelected(page.index + 1)" :to="{ path: $route.path, query: { ...$route.query, page: page.content } }" target="_self" v-else) {{ page.content }}
   li.next(:class="[lastPageSelected ? 'disabled' : '']")

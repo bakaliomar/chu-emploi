@@ -1,25 +1,34 @@
-# Base image
+# Use an official Node.js runtime as a parent image
 FROM node:19-alpine as build-stage
 
-# Set working directory
+# Set the working directory to /app
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+ARG VITE_API_BASE_URL='http://172.28.0.1:3333'
+
+# Copy package.json and package-lock.json to the container
 COPY yarn.lock package.json ./
+
 # Install dependencies
 RUN yarn install
 
-COPY tsconfig.json tsconfig.node.json vite.config.ts index.html .eslintrc.js ./
-COPY src src
-COPY public public
+# Copy the rest of the application code to the container
+COPY . .
 
-RUN npm install -g http-server
-
-# Build the Vue.js project
+# Build the Vue.js app
 RUN yarn build
 
-ARG API_BASE_URL='http://127.0.0.1:3333'
-ENV VITE_API_BASE_URL $API_BASE_URL
+# Production stage
+FROM nginx:stable-alpine as production-stage
 
-EXPOSE 3000
-CMD [ "http-server", "dist", "-p", "3000", "--proxy", "http://127.0.0.1:3000?" ]
+# Copy the built Vue.js app from the build stage to the NGINX container
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+
+# Copy NGINX configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 80 to the outside world
+EXPOSE 80
+
+# Start NGINX
+CMD ["nginx", "-g", "daemon off;"]
