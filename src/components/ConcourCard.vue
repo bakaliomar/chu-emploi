@@ -77,6 +77,7 @@ function getTime(hours: number, minutes: number) {
 
 const depositDate = computed(() => {
   const date = new Date(props.concour.closingDate);
+    console.log(date);
   return `${getArabicDay(date.getDay())} ${date.getDay() + 1} ${getArabicMonth(
     date.getMonth()
   )} ${date.getFullYear()}`;
@@ -100,7 +101,7 @@ onMounted(() => {
       },
     })
     .then(({ data }) => {
-      source.value = window.URL.createObjectURL(new Blob([data as string]));
+      source.value = data;
     });
 });
 </script>
