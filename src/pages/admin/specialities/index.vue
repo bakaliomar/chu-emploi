@@ -23,8 +23,8 @@
       Loader
     template(v-slot:options="{ row }")
       Options.justify-content-end
-        .menu-item(@click="startEdit((row as Speciality))") Editer
-        .menu-item.text-start.text-danger(@click="deleteSpeciality((row as Speciality).id)") Suprimer
+        .menu-item(@click="startEdit(row)") Editer
+        .menu-item.text-start.text-danger(@click="deleteSpeciality(row.id)") Suprimer
     template(#not_found)
       Notfound(entity="Specilaities")
   Paginate(:paginate="pagination" @page-changed="pageChanged" )
