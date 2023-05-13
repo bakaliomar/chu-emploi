@@ -6,7 +6,7 @@
     .d-flex.align-items-center 
       Switcher(v-model="archived" @click="searchPage")
       span.ps-2 Archived
-    button.confirm-btn.primary(@click="downloadData") Download
+    //button.confirm-btn.primary(@click="downloadData") Download
   .filters-container.d-flex.justify-content-between.align-items-end.mt-3
     .filters.d-flex.align-items-center
       .form-group.filter-group

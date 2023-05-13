@@ -27,11 +27,11 @@
   .custom-card
     .d-flex.justify-content-between.align-items-center
       .primary-title Candidature
-      .badge.rounded-pill.px-2.py-1(:class="candiadautre!.state") {{ getState(candiadautre!.state!) }}
+      .badge.rounded-pill.px-2.py-1(:class="candiadautre.state") {{ getState(candiadautre.state) }}
     CandidatureShow.mt-3(:candidature="candiadautre" v-if="candiadautre")
     .pair-title-value
       .pair-title Motive:
-      .pair-value {{ candiadautre!.motive || ""}}
+      .pair-value {{ candiadautre.motive || ""}}
     .d-flex.justify-content-between.mt-3
       button.btn.btn-delete.rounded-pill.px-5.py-2(@click="deleteCandidature") Suprimer
       button.btn.btn-suivant.rounded-pill.px-5.py-2(@click="toggleState") Changer l'etat
