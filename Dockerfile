@@ -4,7 +4,7 @@ FROM node:19-alpine as build-stage
 # Set the working directory to /app
 WORKDIR /app
 
-ARG VITE_API_BASE_URL='http://172.18.20.12:3333'
+ARG VITE_API_BASE_URL='http://102.50.240.75:3333'
 
 # Copy package.json and package-lock.json to the container
 COPY yarn.lock package.json ./
