@@ -11,9 +11,9 @@
       .closing-date اخر أجل لإيداع الترشيحات : {{ depositDate }}
       .concour-date تاريخ إجراء المباراة : {{ concourDate }}
     .d-flex.justify-content-between.flex-row-reverse
-      button.file-btn.rounded-pill.px-5.py-2 
+      button.file-btn.rounded-pill.px-5.py-1(type="button")
         router-link(to="/candidature") إيداع الملف
-      button.submit-btn.rounded-pill.px-5.py-2(@click="$emit('showFile', source)") قرار فتح المباراة
+      button.submit-btn.rounded-pill.px-5.py-1(@click="$emit('showFile', source)" type="button") قرار فتح المباراة
 </template>
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
@@ -77,15 +77,14 @@ function getTime(hours: number, minutes: number) {
 
 const depositDate = computed(() => {
   const date = new Date(props.concour.closingDate);
-    console.log(date);
-  return `${getArabicDay(date.getDay())} ${date.getDay() + 1} ${getArabicMonth(
+  return `${getArabicDay(date.getDay())} ${date.getDate()} ${getArabicMonth(
     date.getMonth()
   )} ${date.getFullYear()}`;
 });
 
 const concourDate = computed(() => {
   const date = new Date(props.concour.concourDate);
-  return `${date.getDay() + 1} ${getArabicMonth(
+  return `${date.getDate()} ${getArabicMonth(
     date.getMonth()
   )} ${date.getFullYear()}  على الساعة ${getTime(
     date.getHours(),

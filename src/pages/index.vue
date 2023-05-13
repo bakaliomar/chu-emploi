@@ -14,7 +14,7 @@
         br
         |Mohammed VI - Tanger
       .postouler-btn-container.d-flex.justify-content-center.mt-auto
-        button.postouler-btn.btn.rounded-pill.mb-5.px-5.py-2(@click="openConcours = true" :disabled="!concours.length" :class="{'disabled': !concours.length}") POSTULER
+        button.postouler-btn.btn.rounded-pill.mb-5.px-5.py-2(@click="openConcours = true" :disabled="!concours.length" :class="{'disabled': !concours.length}" type="button") POSTULER
   .concours-cards-container.h-100(v-else)
     .d-flex.justify-content-center
       .logo-container.mt-5
