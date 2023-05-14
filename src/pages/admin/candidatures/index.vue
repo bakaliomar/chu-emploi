@@ -6,7 +6,7 @@
     .d-flex.align-items-center 
       Switcher(v-model="archived" @click="searchPage")
       span.ps-2 Archived
-    //button.confirm-btn.primary(@click="downloadData") Download
+    button.confirm-btn.primary(@click="downloadData") Download
   .filters-container.d-flex.justify-content-between.align-items-end.mt-3
     .filters.d-flex.align-items-center
       .form-group.filter-group
@@ -205,11 +205,13 @@ function downloadData() {
       },
     })
     .then(({ data }) => {
-      const fileURL = window.URL.createObjectURL(new Blob([data as string]));
+      const fileURL = window.URL.createObjectURL(new Blob([data as string]), {
+        type: "text/csv",
+      });
       const fileLink = document.createElement("a");
 
       fileLink.href = fileURL;
-      fileLink.setAttribute("download", "Candidatures.xlsx");
+      fileLink.setAttribute("download", "Candidatures.csv");
       document.body.appendChild(fileLink);
 
       fileLink.click();
