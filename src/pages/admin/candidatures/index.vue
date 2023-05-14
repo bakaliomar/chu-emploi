@@ -205,9 +205,7 @@ function downloadData() {
       },
     })
     .then(({ data }) => {
-      const fileURL = window.URL.createObjectURL(new Blob([data as string]), {
-        type: "text/csv",
-      });
+      const fileURL = window.URL.createObjectURL(new Blob([data as string]));
       const fileLink = document.createElement("a");
 
       fileLink.href = fileURL;
