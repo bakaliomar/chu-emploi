@@ -13,7 +13,7 @@
     .d-flex.justify-content-between.flex-row-reverse
       button.file-btn.rounded-pill.px-5.py-1(type="button")
         router-link(to="/candidature") إيداع الملف
-      button.submit-btn.rounded-pill.px-5.py-1(@click="$emit('showFile', source)" type="button") قرار فتح المباراة
+      button.submit-btn.rounded-pill.px-5.py-1(@click="$emit('showFile', concour.id)" type="button") قرار فتح المباراة
 </template>
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
@@ -90,18 +90,6 @@ const concourDate = computed(() => {
     date.getHours(),
     date.getMinutes()
   )}`;
-});
-
-onMounted(() => {
-  axios
-    .get(`/concours/${props.concour.id}/anounce`, {
-      headers: {
-        responseType: "blob",
-      },
-    })
-    .then(({ data }) => {
-      source.value = data;
-    });
 });
 </script>
 <style lang="scss">

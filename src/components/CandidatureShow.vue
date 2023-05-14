@@ -96,7 +96,7 @@ const props = defineProps({
 });
 
 const { axios } = useAxios();
-const source = ref("");
+const source = ref<unknown | null>(null);
 
 const isEdit = computed(() => {
   return !!props.candidature.id;
@@ -107,22 +107,28 @@ function dateFormat(val: string): string {
 }
 
 onMounted(() => {
-  if (isEdit.value)
-    axios
-      .get(`/candidatures/${props.candidature.id}/dossier`, {
-        headers: {
-          responseType: "blob",
-        },
-      })
-      .then(({ data }) => {
-        const myBlob = new Blob([data as string]);
-        source.value = window.URL.createObjectURL(
-          new File([myBlob], "dossier.pdf", {
-            type: "application/pdf",
-          })
-        );
-      });
-  else {
+  if (isEdit.value) {
+    const xhr = new XMLHttpRequest();
+    xhr.open(
+      "GET",
+      `${import.meta.env.VITE_API_BASE_URL}/candidatures/${
+        props.candidature.id
+      }/dossier`,
+      true
+    );
+    xhr.setRequestHeader(
+      "Authorization",
+      `Bearer ${localStorage.access_token}`
+    );
+    xhr.responseType = "arraybuffer";
+    xhr.onload = function (e) {
+      if (this.status == 200) {
+        const blob = new Blob([this.response], { type: "application/pdf" });
+        source.value = window.URL.createObjectURL(blob);
+      }
+    };
+    xhr.send();
+  } else {
     source.value = window.URL.createObjectURL(props.candidature.file!);
   }
 });
