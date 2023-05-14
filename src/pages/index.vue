@@ -19,8 +19,8 @@
     .d-flex.justify-content-center
       .logo-container.mt-5
         img.h-100.w-100(:src="logo")
-    .cards-container.row.mt-4.flex-row-reverse
-      .col-12.col-md-12.col-lg-6.p-2(v-for="concour in concours" :key="concour.id")
+    .cards-container.row.mt-4.flex-row-reverse(:class="{'justify-content-center': concours.length === 1}")
+      .col-12.col-md-12.col-lg-12.col-xl-6.p-2(v-for="concour in concours" :key="concour.id")
         ConcourCard(:concour="concour" @showSpecialities="showSpecialities" @showFile="showFile")
 </template>
 <script lang="ts" setup>

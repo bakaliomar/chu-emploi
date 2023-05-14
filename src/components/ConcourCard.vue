@@ -11,9 +11,9 @@
       .closing-date اخر أجل لإيداع الترشيحات : {{ depositDate }}
       .concour-date تاريخ إجراء المباراة : {{ concourDate }}
     .d-flex.justify-content-between.flex-row-reverse
-      button.file-btn.rounded-pill.px-5.py-1(type="button")
+      button.file-btn.rounded-pill.px-5.py-2(type="button")
         router-link(to="/candidature") إيداع الملف
-      button.submit-btn.rounded-pill.px-5.py-1(@click="$emit('showFile', concour.id)" type="button") قرار فتح المباراة
+      button.depose-btn.rounded-pill.px-5.py-2(@click="$emit('showFile', concour.id)" type="button") قرار فتح المباراة
 </template>
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
@@ -120,7 +120,7 @@ const concourDate = computed(() => {
         text-decoration: none;
       }
     }
-    .submit-btn {
+    .depose-btn {
       background-color: #22aee5;
       color: white;
       font-weight: 600;

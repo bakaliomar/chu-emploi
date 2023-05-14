@@ -40,7 +40,7 @@
           label.required Pr&eacute;nom 
           input.form-control.shadow.bg-body.rounded(type='text' v-model="firstName")
           small.error {{ errors.firstName }}
-        .form-group.col-12.col-md-6.col-lg-3
+        .form-group.col-12.col-md-6.col-lg-3.text-end.d-block
           label.text-end.arbic-required  &#x627;&#x644;&#x625;&#x633;&#x645; &#x627;&#x644;&#x634;&#x62E;&#x635;&#x64A;
           input.form-control.shadow.bg-body.rounded(type='text' v-model="firstNameArabic")
           small.error {{ errors.firstNameArabic }}
@@ -54,7 +54,7 @@
           label.required Nom 
           input.form-control.shadow.bg-body.rounded(type='text' v-model="lastName")
           small.error {{ errors.lastName }}
-        .form-group.col-12.col-md-6.col-lg-3
+        .form-group.col-12.col-md-6.col-lg-3.text-end.d-block
           label.text-end.arbic-required  &#x627;&#x644;&#x625;&#x633;&#x645; &#x627;&#x644;&#x639;&#x627;&#x626;&#x644;&#x64A;
           input.form-control.shadow.bg-body.rounded(type='text' v-model="lastNameArabic")
           small.error {{ errors.lastNameArabic }}
@@ -62,7 +62,7 @@
           label.required Lieu de naissance 
           input.form-control.shadow.bg-body.rounded(type='text' v-model="birthPlace")
           small.error {{ errors.birthPlace }}
-        .form-group.col-12.col-md-6.col-lg-3
+        .form-group.col-12.col-md-6.col-lg-3.text-end.d-block
           label.text-end.arbic-required  &#x645;&#x643;&#x627;&#x646; &#x627;&#x644;&#x625;&#x632;&#x62F;&#x64A;&#x627;&#x62F;
           input.form-control.shadow.bg-body.rounded(type='text' v-model="birthPlaceArabic")
           small.error {{ errors.birthPlaceArabic }}
@@ -85,7 +85,7 @@
           label.required Ville 
           input.form-control.shadow.bg-body.rounded(type='text' v-model="city")
           small.error {{ errors.city }}
-        .form-group.col-12.col-md-3
+        .form-group.col-12.col-md-3.text-end.d-block
           label.text-end.arbic-required  &#x627;&#x644;&#x645;&#x62F;&#x64A;&#x646;&#x629;
           input.form-control.shadow.bg-body.rounded(type='text' v-model="cityArabic")
           small.error {{ errors.cityArabic }}
