@@ -220,11 +220,15 @@ const { handleSubmit, errors } = useForm({
     birthPlaceArabic: yup.string().required(),
     address: yup.string().required(),
     addressArabic: yup.string().required(),
-    postalCode: yup.string().required(),
+    postalCode: yup.number().required(),
     city: yup.string().required(),
     cityArabic: yup.string().required(),
     email: yup.string().email().required(),
-    phone: yup.string().required(),
+    phone: yup
+      .string()
+      .matches(/[1-4]/g, "telphone doit ere shifres")
+      .length(10)
+      .required(),
     degreeLevel: yup.string().required(),
     degreeTitle: yup.string().required(),
     degreeSpeciality: yup.string().required(),
@@ -357,7 +361,13 @@ function sendData() {
   formData.append("city", city.value as string);
   formData.append("cityArabic", cityArabic.value as string);
   formData.append("codePostal", postalCode.value as string);
-  formData.append("phone", phone.value as string);
+  formData.append(
+    "phone",
+    `+212${(phone.value as string).substring(
+      1,
+      (phone.value as string).length
+    )}`
+  );
   formData.append("address", address.value as string);
   formData.append("addressArabic", addressArabic.value as string);
   formData.append("graduationYear", graduationYear.value as string);
