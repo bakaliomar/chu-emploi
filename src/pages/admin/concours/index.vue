@@ -131,16 +131,8 @@ const deleteConcour = async (id: string) => {
 };
 
 function openAnounce(id: string) {
-  axios
-    .get(`/concours/${id}/anounce`, {
-      headers: {
-        responseType: "blob",
-      },
-    })
-    .then(({ data }) => {
-      source.value = window.URL.createObjectURL(new Blob([data as string]));
-      showPdf.value = true;
-    });
+  source.value = id;
+  showPdf.value = true;
 }
 
 onBeforeMount(() => {
