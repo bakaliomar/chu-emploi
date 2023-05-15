@@ -23,7 +23,7 @@
         small.error {{ motiveError }}
     .d-flex.justify-content-between.mt-4
       button.confirm-btn.outline-primary.mxw-130(@click="isOpen = false") Cancel
-      button.confirm.confirm-btn.primary.mxw-130(@click="save") Save
+      button.confirm.confirm-btn.primary.mxw-130(@click="save" type="button") Save
   .custom-card
     .d-flex.justify-content-between.align-items-center
       .primary-title Candidature
@@ -43,8 +43,6 @@ import { useRoute, useRouter } from "vue-router";
 import CandidatureShow from "@/components/CandidatureShow.vue";
 import Modal from "@/components/Modal.vue";
 import ConfirmModal from "@/components/ConfirmModal.vue";
-import { useField, useForm } from "vee-validate";
-import * as yup from "yup";
 import { useNotification } from "@kyvg/vue3-notification";
 
 const { axios } = useAxios();
@@ -58,22 +56,14 @@ const loading = ref(true);
 const motive = ref("");
 const motiveError = ref("");
 
-const { submitForm, errors } = useForm({
-  validationSchema: yup.object({
-    state: yup.string().required(),
-  }),
-});
-
-const { value: state } = useField("state", undefined, {
-  initialValue: candiadautre.value?.state || "",
-});
+const state = ref(candiadautre.value?.state || "");
 
 const isRefused = computed(() => {
   return state.value === "REFUSED";
 });
 
 function save() {
-  if ((isRefused.value, !motive.value)) {
+  if (isRefused.value && !motive.value) {
     motiveError.value = "Motive is a Required Field";
     return;
   }
@@ -81,7 +71,7 @@ function save() {
   axios
     .patch(`candidatures/${route.params.id}/toggle`, {
       state: state.value,
-      motive: motive.value,
+      motive: motive.value || undefined,
     })
     .then(() => {
       notify({
