@@ -30,7 +30,7 @@
   Paginate(:paginate="pagination" @page-changed="pageChanged" )
 </template>
 <script lang="ts" setup>
-import { ref, onBeforeMount, computed } from "vue";
+import { ref, onBeforeMount, computed, watch } from "vue";
 import useAxios from "@/composables/useAxios";
 import Table from "@/components/Table.vue";
 import Loader from "@/components/Loader.vue";
@@ -43,6 +43,7 @@ import * as yup from "yup";
 import { isEmpty } from "lodash";
 import Modal from "@/components/Modal.vue";
 import Paginate from "@/components/Pagination.vue";
+import { useRoute, useRouter } from "vue-router";
 
 interface Speciality {
   name: string;
@@ -51,9 +52,11 @@ interface Speciality {
 }
 
 const { axios } = useAxios();
+const route = useRoute();
+const router = useRouter();
 const specialities = ref<Speciality[]>([]);
 const pagination = ref<Paginate>({
-  currentPage: 0,
+  currentPage: (route.query.page as unknown as number) || 1,
   lastPage: 0,
   next: null,
   perPage: 0,
@@ -93,6 +96,12 @@ const selectedId = ref("");
 
 function pageChanged(page: number) {
   pagination.value.currentPage = page;
+  router.push({
+    name: route.name!,
+    query: {
+      page,
+    },
+  });
 }
 
 function startAdd() {
@@ -152,8 +161,8 @@ function loadSpecialities() {
   axios
     .get("/specialities", {
       params: {
-        page: pagination.value.currentPage || 1,
-        perPage: 10,
+        page: route.query.page || 1,
+        perPage: route.query.perPage || 10,
       },
     })
     .then(({ data }) => {
@@ -182,9 +191,13 @@ const deleteSpeciality = async (id: string) => {
   }
 };
 
-onBeforeMount(() => {
-  loadSpecialities();
-});
+watch(
+  () => route,
+  () => {
+    loadSpecialities();
+  },
+  { immediate: true, deep: true }
+);
 </script>
 <route lang="yaml">
 meta:
