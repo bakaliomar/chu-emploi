@@ -123,6 +123,12 @@ const header: Header[] = [
 
 function pageChanged(page: number) {
   pagination.value.currentPage = page;
+  router.push({
+    name: route.name!,
+    query: {
+      page,
+    },
+  });
 }
 
 function getState(state: string) {
@@ -156,12 +162,12 @@ function loadCandidatures() {
   axios
     .get("/candidatures", {
       params: {
-        keyword: keyword.value || undefined,
-        concour: concour.value || undefined,
-        speciality: speciality.value || undefined,
-        archived: archived.value || undefined,
-        state: state.value || undefined,
-        page: pagination.value.currentPage || 1,
+        keyword: route.query.keyword || undefined,
+        concour: route.query.concour || undefined,
+        speciality: route.query.speciality || undefined,
+        archived: route.query.archived || undefined,
+        state: route.query.state || undefined,
+        page: route.query.page || 1,
         perPage: 10,
       },
     })
