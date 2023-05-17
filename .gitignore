@@ -10,6 +10,7 @@ compose-dev.yaml
 
 node_modules
 dist
+ssl_certificates
 dist-ssr
 *.local
 .env
