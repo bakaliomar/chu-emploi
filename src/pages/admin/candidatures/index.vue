@@ -42,7 +42,8 @@
       .candidatures-item.badge(:class="col") {{ getState(col) }}
     template(#not_found)
       Notfound(entity="Candidature")
-  Paginate(:paginate="pagination" @page-changed="pageChanged" )
+  .text-center
+    Paginate(:paginate="pagination" @page-changed="pageChanged" )
 </template>
 <script lang="ts" setup>
 import { ref, watch, computed, onBeforeMount } from "vue";

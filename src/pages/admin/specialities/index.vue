@@ -27,7 +27,8 @@
         .menu-item.text-start.text-danger(@click="deleteSpeciality(row.id)") Suprimer
     template(#not_found)
       Notfound(entity="Specilaities")
-  Paginate(:paginate="pagination" @page-changed="pageChanged" )
+  .text-center
+    Paginate(:paginate="pagination" @page-changed="pageChanged" )
 </template>
 <script lang="ts" setup>
 import { ref, onBeforeMount, computed, watch } from "vue";
