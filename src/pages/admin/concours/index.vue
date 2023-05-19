@@ -29,9 +29,9 @@
           RouterLink.d-flex.w-100.h-100(:to="{name: 'admin_concours_id', params: { id: row.id }}") Editer
         .menu-item.text-start.text-danger(@click="deleteConcour(row.id)") Suprimer
     template(#not_found)
-      Notfound(entity="Candidature")
-          
-
+      Notfound(entity="Candidature") 
+  .text-center
+    Paginate(:paginate="pagination" @page-changed="pageChanged" )
 
 </template>
 <script lang="ts" setup>
@@ -45,9 +45,12 @@ import ConfirmModal from "@/components/ConfirmModal.vue";
 import { useNotification } from "@kyvg/vue3-notification";
 import PDFViewerModal from "@/components/PDFViewerModal.vue";
 import { startCase } from "lodash";
+import { useRoute, useRouter } from "vue-router";
 import Notfound from "@/components/Notfound.vue";
 
 const { axios } = useAxios();
+const route = useRoute();
+const router = useRouter();
 const concours = ref<Concour[]>([]);
 const pagination = ref<Paginate>({
   currentPage: 0,
@@ -96,6 +99,16 @@ const header: Header[] = [
   },
 ];
 
+function pageChanged(page: number) {
+  pagination.value.currentPage = page;
+  router.push({
+    name: route.name!,
+    query: {
+      page,
+    },
+  });
+}
+
 function dateFormat(val: string): string {
   return val ? format(new Date(val)) : "N/A";
 }
@@ -103,7 +116,12 @@ function dateFormat(val: string): string {
 function loadConcours() {
   loading.value = true;
   axios
-    .get("/concours")
+    .get("/concours", {
+      params: {
+        page: route.query.page || 1,
+        perPage: 10,
+      },
+    })
     .then(({ data }) => {
       concours.value = data.data;
       pagination.value = data.meta;
