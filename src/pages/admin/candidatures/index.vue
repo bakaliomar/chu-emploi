@@ -127,6 +127,7 @@ function pageChanged(page: number) {
   router.push({
     name: route.name!,
     query: {
+      ...route.query,
       page,
     },
   });
@@ -149,6 +150,7 @@ const searchPage = () => {
   router.push({
     name: route.name!,
     query: {
+      ...route.query,
       keyword: keyword.value || undefined,
       concour: concour.value || undefined,
       speciality: speciality.value || undefined,
