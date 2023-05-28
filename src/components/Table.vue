@@ -122,7 +122,7 @@ const overflow = (): void => {
 
   td,
   th {
-    max-width: var(--max-column-width);
+    //max-width: var(--max-column-width);
     vertical-align: middle !important;
     padding: 0.75rem;
     box-shadow: inset 0 0 0 9999px $blue-light-3;
