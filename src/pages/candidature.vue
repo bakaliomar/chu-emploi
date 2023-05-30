@@ -352,7 +352,7 @@ function sendData() {
   formData.append("email", email.value as string);
   formData.append("cin", cin.value as string);
   formData.append("firstName", firstName.value as string);
-  formData.append("firstNameArabic", firstName.value as string);
+  formData.append("firstNameArabic", firstNameArabic.value as string);
   formData.append("lastName", lastName.value as string);
   formData.append("lastNameArabic", lastNameArabic.value as string);
   formData.append("birthDate", (birthDate.value as Date).toISOString());

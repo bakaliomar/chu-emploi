@@ -6,7 +6,9 @@
     .d-flex.align-items-center 
       Switcher(v-model="archived" @click="searchPage")
       span.ps-2 Archived
-    button.confirm-btn.primary(@click="downloadData") Download
+    .right-side
+      button.confirm-btn.primary(@click="downloadCsv") Download Csv
+      button.confirm-btn.primary.ms-2(@click="downloadExcel") Download Excel
   .filters-container.d-flex.justify-content-between.align-items-end.mt-3
     .filters.d-flex.align-items-center
       .form-group.filter-group
@@ -199,9 +201,9 @@ function loadSpecialities() {
   }
 }
 
-function downloadData() {
+function downloadCsv() {
   axios
-    .get("/candidatures/excel/download", {
+    .get("/candidatures/csv/download", {
       headers: {
         responseType: "blob",
       },
@@ -223,6 +225,39 @@ function downloadData() {
 
       fileLink.click();
     });
+}
+
+function downloadExcel() {
+  const url = new URL(
+    `${import.meta.env.VITE_API_BASE_URL}/candidatures/excel/download`
+  );
+  const params = new URLSearchParams();
+  if (keyword.value) params.set("keyword", keyword.value as string);
+  if (concour.value) params.set("concour", concour.value as string);
+  if (speciality.value) params.set("speciality", speciality.value as string);
+  if (archived.value) params.set("archived", archived.value as string);
+  if (state.value) params.set("state", state.value as string);
+  url.search = params.toString();
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", url, true);
+  xhr.setRequestHeader("Authorization", `Bearer ${localStorage.access_token}`);
+  xhr.responseType = "arraybuffer";
+  xhr.onload = function (e) {
+    if (this.status == 200) {
+      const blob = new Blob([this.response], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const fileURL = window.URL.createObjectURL(blob);
+      const fileLink = document.createElement("a");
+
+      fileLink.href = fileURL;
+      fileLink.setAttribute("download", "file.xlsx");
+      document.body.appendChild(fileLink);
+
+      fileLink.click();
+    }
+  };
+  xhr.send();
 }
 
 watch(
