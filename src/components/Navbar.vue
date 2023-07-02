@@ -12,14 +12,18 @@
           RouterLink(:to="{ name: 'admin_candidatures' }") Candidatures
         li(:class="{ 'active': $route.path.includes('/admin/specialities') }")
           RouterLink(:to="{ name: 'admin_specialities' }") Specialities
+        li(:class="{ 'active': $route.path.includes('/admin/users') }" v-if="currentUser.isAdmin")
+          RouterLink(:to="{ name: 'admin_users' }") Users
         li
           RouterLink(:to="{ name: 'admin_logout' }") Logout
 </template>
 <script lang="ts" setup>
 import { ref } from "vue";
 import logo from "@/assets/img/chu-new.png";
+import { useAuthStore } from "@/store/useAuth.store";
 
 const isMenuOpen = ref(false);
+const { currentUser } = useAuthStore();
 </script>
 <style lang="scss">
 .navbar-container {
