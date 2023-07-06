@@ -17,10 +17,23 @@
         .form-check.d-flex.align-items-baseline
           input.form-check-input(type='radio' value="ADMITTED" v-model="state")
           label.form-check-label.ms-2 Admis définitivement
-      .form-group.col-12.col-md-7(v-if="isRefused")
-        label.required Motive
-        textarea.form-control.shadow.bg-body.rounded(rows='3' v-model="motive")
-        small.error {{ motiveError }}
+      .col-12.col-md-7(v-if="isRefused")
+        .form-check.d-flex.align-items-baseline
+          input.form-check-input(type='radio' value="Reconnaissance de diplôme" v-model="motive")
+          label.form-check-label.ms-2 Reconnaissance de diplôme
+        .form-check.d-flex.align-items-baseline
+          input.form-check-input(type='radio' value="Manque des pièces" v-model="motive")
+          label.form-check-label.ms-2 Manque des pièces
+        .form-check.d-flex.align-items-baseline
+          input.form-check-input(type='radio' value="Légalisation" v-model="motive")
+          label.form-check-label.ms-2 Légalisation
+        .form-check.d-flex.align-items-baseline
+          input.form-check-input(type='radio' value="Autre" @change="writeMotive" v-model="motive")
+          label.form-check-label.ms-2 Autre
+        .form-group(v-if="isOther")
+          label.required Motive
+          textarea.form-control.shadow.bg-body.rounded(rows='3' v-model="motiveMsg")
+          small.error {{ motiveError }}
     .d-flex.justify-content-between.mt-4
       button.confirm-btn.outline-primary.mxw-130(@click="isOpen = false") Cancel
       button.confirm.confirm-btn.primary.mxw-130(@click="save" type="button") Save
@@ -53,13 +66,18 @@ const isOpen = ref(false);
 const confirm_modal = ref<typeof ConfirmModal | null>(null);
 const { notify } = useNotification();
 const loading = ref(true);
-const motive = ref("");
+const motive = ref("Reconnaissance de diplôme");
 const motiveError = ref("");
+const motiveMsg = ref("");
 
 const state = ref(candiadautre.value?.state || "");
 
 const isRefused = computed(() => {
   return state.value === "REFUSED";
+});
+
+const isOther = computed(() => {
+  return motive.value === "Autre";
 });
 
 function save() {
@@ -71,7 +89,11 @@ function save() {
   axios
     .patch(`candidatures/${route.params.id}/toggle`, {
       state: state.value,
-      motive: motive.value || undefined,
+      ...(isRefused.value
+        ? {
+            motive: isOther.value ? motiveMsg.value : motive.value || undefined,
+          }
+        : {}),
     })
     .then(() => {
       notify({
