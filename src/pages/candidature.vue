@@ -226,7 +226,7 @@ const { handleSubmit, errors } = useForm({
     email: yup.string().email().required(),
     phone: yup
       .string()
-      .matches(/[1-4]/g, "telphone doit ere shifres")
+      .matches(/[1-4]/g, "telphone doit etre shifres")
       .length(10)
       .required(),
     degreeLevel: yup.string().required(),
@@ -396,7 +396,24 @@ function sendData() {
     });
 }
 
-onsubmit = handleSubmit(() => {
+async function checkFilePages() {
+  return new Promise((resolve, reject) => {
+    try {
+      if (file.value) {
+        const reader = new FileReader();
+        reader.readAsBinaryString(file.value);
+        reader.onloadend = function () {
+          const count = reader.result.match(/\/Type[\s]*\/Page[^s]/g).length;
+          resolve(count);
+        };
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
+onsubmit = handleSubmit(async () => {
   if ((!uploader.value?.files?.length && !file.value) || !accept.value) {
     fileError.value = accept.value ? "file is a required field" : "";
     conditionError.value = !accept.value
@@ -407,6 +424,11 @@ onsubmit = handleSubmit(() => {
   if (uploader.value?.files?.length) file.value = uploader.value.files[0];
   fileError.value = "";
   conditionError.value = "";
+  const count = await checkFilePages();
+  if (count < 4) {
+    fileError.value = "valider votre dossier il n'est pas complet";
+    return;
+  }
   confirmationStep.value = true;
 });
 </script>
