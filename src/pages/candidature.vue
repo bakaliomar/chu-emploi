@@ -396,14 +396,16 @@ function sendData() {
     });
 }
 
-async function checkFilePages() {
+function checkFilePages(): Promise<number> {
   return new Promise((resolve, reject) => {
     try {
       if (file.value) {
         const reader = new FileReader();
         reader.readAsBinaryString(file.value);
         reader.onloadend = function () {
-          const count = reader.result.match(/\/Type[\s]*\/Page[^s]/g).length;
+          const count = reader.result
+            ? (reader.result as string).match(/\/Type[\s]*\/Page[^s]/g)!.length
+            : 0;
           resolve(count);
         };
       }
@@ -424,7 +426,7 @@ onsubmit = handleSubmit(async () => {
   if (uploader.value?.files?.length) file.value = uploader.value.files[0];
   fileError.value = "";
   conditionError.value = "";
-  const count = await checkFilePages();
+  const count: number = await checkFilePages();
   if (count < 4) {
     fileError.value = "valider votre dossier il n'est pas complet";
     return;
