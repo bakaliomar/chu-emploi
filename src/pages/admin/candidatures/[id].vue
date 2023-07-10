@@ -19,14 +19,14 @@
           label.form-check-label.ms-2 Admis définitivement
       .col-12.col-md-7(v-if="isRefused")
         .form-check.d-flex.align-items-baseline
-          input.form-check-input(type='radio' value="Reconnaissance de diplôme" v-model="motive")
-          label.form-check-label.ms-2 Reconnaissance de diplôme
+          input.form-check-input(type='radio' value="Diplôme non conforme" v-model="motive")
+          label.form-check-label.ms-2 Diplôme non conforme
         .form-check.d-flex.align-items-baseline
           input.form-check-input(type='radio' value="Manque des pièces" v-model="motive")
           label.form-check-label.ms-2 Manque des pièces
         .form-check.d-flex.align-items-baseline
-          input.form-check-input(type='radio' value="Légalisation" v-model="motive")
-          label.form-check-label.ms-2 Légalisation
+          input.form-check-input(type='radio' value="Age" v-model="motive")
+          label.form-check-label.ms-2 Age
         .form-check.d-flex.align-items-baseline
           input.form-check-input(type='radio' value="Autre" @change="writeMotive" v-model="motive")
           label.form-check-label.ms-2 Autre
