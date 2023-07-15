@@ -153,6 +153,7 @@ const searchPage = () => {
     name: route.name!,
     query: {
       ...route.query,
+      page: 1,
       keyword: keyword.value || undefined,
       concour: concour.value || undefined,
       speciality: speciality.value || undefined,
