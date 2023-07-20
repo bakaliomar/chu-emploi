@@ -183,7 +183,7 @@
         CandidatureShow(:candidature="candidature")
         .d-flex.justify-content-center.mt-5
           button.btn.btn-precedent.rounded-pill.px-5.py-2(@click="confirmationStep = false") Précédent
-          button.btn.btn-suivant.rounded-pill.px-5.py-2.ms-3(@click="sendData") Envoyer
+          button.btn.btn-suivant.rounded-pill.px-5.py-2.ms-3(@click="sendData" :disabled="clicked") Envoyer
   .success-card-conatiner.d-flex.justify-content-center.align-items-center(v-else)
     .success-card.d-flex.aliign-items-center
       .success-card-message
@@ -251,6 +251,8 @@ const isDone = ref(false);
 const uploader = ref<HTMLInputElement | null>();
 const file = ref<File | null>(null);
 const { notify } = useNotification();
+
+const clicked = ref(false);
 
 const { value: concour } = useField("concour");
 const { value: speciality } = useField("speciality");
@@ -346,6 +348,7 @@ function loadSpecialities() {
 }
 
 function sendData() {
+  clicked.value = true;
   const formData = new FormData();
   formData.append("file", file.value!, file.value!.name);
   formData.append("title", title.value);
@@ -393,6 +396,9 @@ function sendData() {
         title: "candiadautre added successfully",
       });
       isDone.value = true;
+    })
+    .finally(() => {
+      clicked.value = false;
     });
 }
 
