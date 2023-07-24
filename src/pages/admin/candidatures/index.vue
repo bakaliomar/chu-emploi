@@ -187,7 +187,7 @@ function loadCandidatures() {
 }
 
 onBeforeMount(() => {
-  axios.get("/concours/autocomplete").then(({ data }) => {
+  axios.get("/concours/admin/autocomplete").then(({ data }) => {
     concours.value = data;
   });
 });
