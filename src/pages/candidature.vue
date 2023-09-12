@@ -156,7 +156,7 @@
         h4.secondary-title Documents attach&eacute;s 
         hr.hr.mt-0
         p
-          | Copie l&eacute;galis&eacute;e de la CIN recto-verso + Demande manuscrite + CV + Autorisation administrative pour les fonctionnaires + Copie l&eacute;galis&eacute;e du dipl&ocirc;me + Attestation d&rsquo;&eacute;quivalence (obligatoire pour les dipl&ocirc;mes &eacute;trangers). Tous les documents doivent &ecirc;tre r&eacute;unis
+          | Copie l&eacute;galis&eacute;e de la CIN recto-verso + Demande manuscrite + CV + Autorisation administrative pour les fonctionnaires + Copie l&eacute;galis&eacute;e du dipl&ocirc;me + Attestation d&rsquo;&eacute;quivalence (obligatoire pour les dipl&ocirc;mes &eacute;trangers). Tous les documents doivent &ecirc;tre r&eacute;unis, Le document PDF doit avoir au moins 4 pages
       .form-group.col-12
         label.required Dossier 
         input.form-control.shadow.bg-body.rounded(type='file' ref="uploader")
@@ -434,7 +434,8 @@ onsubmit = handleSubmit(async () => {
   conditionError.value = "";
   const count: number = await checkFilePages();
   if (count < 4) {
-    fileError.value = "valider votre dossier il n'est pas complet";
+    fileError.value =
+      "valider votre dossier il n'est pas complet (le document PDF doit avoir au moins 4 pages)";
     return;
   }
   confirmationStep.value = true;
