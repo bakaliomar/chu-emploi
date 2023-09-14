@@ -49,6 +49,7 @@ export class AxiosSingleton {
           else if (errors?.error) {
             notify({
               title: errors.error,
+              text: errors.message,
               type: "error",
             });
           }
