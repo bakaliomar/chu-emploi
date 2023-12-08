@@ -186,10 +186,18 @@ function loadCandidatures() {
     });
 }
 
+function loadConcours() {
+  axios
+    .get("/concours/admin/autocomplete", {
+      params: { archived: archived.value || false },
+    })
+    .then(({ data }) => {
+      concours.value = data;
+    });
+}
+
 onBeforeMount(() => {
-  axios.get("/concours/admin/autocomplete").then(({ data }) => {
-    concours.value = data;
-  });
+  loadConcours();
 });
 
 function loadSpecialities() {
@@ -278,6 +286,14 @@ watch(
   () => concour.value,
   () => {
     loadSpecialities();
+  },
+  { immediate: true }
+);
+
+watch(
+  () => archived.value,
+  () => {
+    loadConcours();
   },
   { immediate: true }
 );
