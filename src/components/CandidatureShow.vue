@@ -78,6 +78,9 @@
     .pair-title Pays:
     .pair-value {{ candidature.graduationCountry }}
   .pair-title-value
+    .pair-title Profession actuelle:
+    .pair-value {{ candidature.currentJob }}
+  .pair-title-value
     .pair-title Documents attachés:
     .pair-value
       a(:href="source" target="_blank") dossierlien
