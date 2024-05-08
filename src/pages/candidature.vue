@@ -347,6 +347,41 @@ function loadSpecialities() {
   }
 }
 
+function readFileAsync(file: File) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+async function merge() {
+  const PDFDocument = PDFLib.PDFDocument;
+
+  const in1 = document.getElementById("file1").files[0];
+  const in2 = document.getElementById("file2").files[0];
+  const bytes1 = await readFileAsync(in1);
+  const bytes2 = await readFileAsync(in2);
+  const pdf1 = await PDFDocument.load(bytes1);
+  const pdf2 = await PDFDocument.load(bytes2);
+
+  const mergedPdf = await PDFDocument.create();
+  const copiedPagesA = await mergedPdf.copyPages(pdf1, pdf1.getPageIndices());
+  copiedPagesA.forEach((page) => mergedPdf.addPage(page));
+  const copiedPagesB = await mergedPdf.copyPages(pdf2, pdf2.getPageIndices());
+  copiedPagesB.forEach((page) => mergedPdf.addPage(page));
+  const mergedPdfFile = await mergedPdf.save();
+
+  download(
+    mergedPdfFile,
+    "pdf-lib_page_copying_example.pdf",
+    "application/pdf"
+  );
+}
+
 function sendData() {
   clicked.value = true;
   const formData = new FormData();
